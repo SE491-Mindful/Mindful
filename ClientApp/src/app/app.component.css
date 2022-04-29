@@ -1,0 +1,32 @@
+
+
+  .clouds {
+    z-index: 0 !important;
+    stroke-width: 0;
+    fill: #c2c3c4;
+    animation: move 60s ease-in-out 0s infinite alternate;
+  }
+
+  @keyframes move {
+    0% { transform: translate(-200px); }
+    50% { transform: scale(2.0); }
+    100% { transform: translateX(200px); }
+  }
+
+  .content {
+    z-index: -1;
+    display: flex;
+    margin: 82px auto 32px;
+    padding: 0 16px;
+    max-width: 960px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  svg#clouds {
+    position: fixed;
+    bottom: -160px;
+    left: -230px;
+    z-index: -10;
+    width: 1920px;
+  }
