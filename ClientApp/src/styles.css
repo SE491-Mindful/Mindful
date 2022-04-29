@@ -26,3 +26,32 @@ html, body {
     margin: 0;
   }
   
+  
+
+  .clouds {
+    z-index: -1 !important;
+    stroke-width: 0;
+    fill: #c2c3c4;
+    animation: move 60s ease-in-out 0s infinite alternate;
+  }
+
+  @keyframes move {
+    0% { transform: translate(-200px); }
+    50% { transform: scale(2.0); }
+    100% { transform: translateX(200px); }
+  }
+
+  .content {
+    z-index: 0;
+    width: auto;
+    height: auto;
+    min-width: 420px;
+  }
+
+  svg#clouds {
+    position: fixed;
+    bottom: -160px;
+    left: -230px;
+    z-index: -10;
+    width: 1920px;
+  }

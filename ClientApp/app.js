@@ -1,13 +1,19 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, screen } = require('electron')
 const url = require("url");
 const path = require("path");
 
 let mainWindow
 
 function createWindow () {
+
+  const electronScreen = screen;
+  const size = electronScreen.getPrimaryDisplay().workAreaSize;
+
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    x: 0,
+    y: 0,
+    width: size.width,
+    height: size.height,
     webPreferences: {
       nodeIntegration: true
     }
