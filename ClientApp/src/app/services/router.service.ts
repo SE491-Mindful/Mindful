@@ -9,8 +9,13 @@ export class RouterService {
   constructor (private router: Router) {
   }
 
-  // function that handles the navigation on a successful authentication into Mindful
+  // function that handles the navigation on a successful authentication into Mindful.
   navigateFromLogin = () => {
     this.router.navigate(['calendar']);
+  };
+
+  // wrapper to simplify navigate functionality on router.
+  navigate = (location: string) => {
+    this.router.navigate([location]);
   };
 }

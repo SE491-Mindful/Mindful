@@ -1,4 +1,6 @@
+/* eslint-disable no-useless-constructor */
 import { Component } from '@angular/core';
+import { LocalStorageService } from './services/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +8,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'ClientApp';
+  constructor (private storage: LocalStorageService) {
+  }
 
   doSometing = () => {
     return true;

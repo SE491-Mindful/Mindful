@@ -1,15 +1,15 @@
 import { Router } from '@angular/router';
 import { RouterService } from 'src/app/services/router.service';
 
-import { LoginComponent } from './login.component';
+import { PreferencesButtonComponent } from './preferences-button.component';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
+describe('PreferencesComponent', () => {
+  let component: PreferencesButtonComponent;
   const router = <Router>{};
   const routerService = new RouterService(router);
 
   beforeEach(async () => {
-    component = new LoginComponent(routerService);
+    component = new PreferencesButtonComponent(routerService);
   });
 
   it('should create', () => {
