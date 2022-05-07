@@ -2,7 +2,8 @@
 export const AppRoutes = {
   Login: 'login',
   Preferences: 'preferences',
-  Calendar: 'calendar'
+  Calendar: 'calendar',
+  CreateAccount: 'createAccount'
 };
 
 // This is the default state of the app for chrome localStorage.

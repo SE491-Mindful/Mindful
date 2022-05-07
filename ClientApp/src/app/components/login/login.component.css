@@ -35,3 +35,19 @@
   .login-row {
     min-width: 100px;
   }
+
+  #createAccountLink {
+    color: white;
+  }
+
+  #createAccountLink:hover{
+    color: grey;
+    transition: transform 1s;
+    transform: scale(1.125);
+  }
+
+  #createAccountLink:hover::after{
+    color: white;
+    transition: transform 1s;
+    transform: scale(1);
+  }
