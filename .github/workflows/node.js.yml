@@ -35,7 +35,7 @@ jobs:
         run: npm test
     - run: npm run build --prod --output-path=dist --base-href="https://se491-softwareengineeringstudio.github.io/Mindful/"
     - name: Publish generated content to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@3.5.9
+      uses: JamesIves/github-pages-deploy-action@4.3.3
       with:
         FOLDER : dist
         branch: gh-pages
