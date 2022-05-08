@@ -1,8 +1,0 @@
-#main-content{
-    min-height: 100vh !important;
-    min-width: 100vw !important;
-    height: 100vh !important;
-    width: 100vw !important;
-    z-index: 3 !important;
-    position: fixed;
-}
