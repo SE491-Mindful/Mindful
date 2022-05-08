@@ -32,4 +32,5 @@ jobs:
     - name: Run headless test
       uses: GabrielBB/xvfb-action@v1
       with:
+        working-directory: ./ClientApp/
         run: npm test
