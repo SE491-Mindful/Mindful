@@ -1,0 +1,45 @@
+  <!-- Terminal -->
+<div id="main-terminal" class="terminal container">
+    <div class="row">
+        <div class="col-12 mx-auto">
+            <div class="d-flex flex-row mb-4 login-row">
+                <div class="p-1 input-group mx-auto col-6">
+                    <input [(ngModel)]="model.username" placeholder="Username" name="userInput" style="background-color: black; color:white" type="text" class="form-control p-1">
+                </div>
+            </div>
+    
+            <div class="d-flex flex-row mb-4 login-row">
+                <div class="p-1 input-group mx-auto col-6">
+                    <input [(ngModel)]="model.password" placeholder="Password" name="userInput" style="background-color: black; color:white" type="text" class="form-control p-1">
+                </div>
+            </div>
+    
+            <div class="d-flex flex-row mb-4 login-row">
+                <div class="mx-auto col-12">
+                    <button (click)="login()" class="btn-lg btn-block btn-primary">Login</button>
+                </div>
+            </div>
+            
+            <div id="createAccountLink" class="d-flex flex-row float-right mb-4 login-row">
+                <div class="mx-auto col-12">
+                    <a (click)="createAccount()" class="">Create Account</a>
+                </div>
+            </div>
+    
+            <div id="meeting-info">
+                <div class="d-flex flex-row"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DEBUG NgModel -->
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-6 mx-auto">
+            <pre style="color: white">
+                {{ model | json }}
+            </pre>
+        </div>
+    </div>
+</div> -->
