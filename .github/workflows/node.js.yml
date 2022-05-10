@@ -40,4 +40,4 @@ jobs:
       with:
         FOLDER : ./ClientApp/dist
         branch: gh-pages
-        github_token : ${{ secrets.GITHUB_TOKEN }} 
+        github_token : ${{ secrets.GITHUB_TOKEN }}  
