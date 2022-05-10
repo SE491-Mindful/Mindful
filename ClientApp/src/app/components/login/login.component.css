@@ -42,8 +42,9 @@
 
   #createAccountLink:hover{
     color: grey;
-    transition: transform 1s;
-    transform: scale(1.125);
+   /* transition: transform 1s;
+    transform: scale(1.125);*/
+
   }
 
   #createAccountLink:hover::after{
@@ -51,3 +52,22 @@
     transition: transform 1s;
     transform: scale(1);
   }
+
+  #usernameInput:hover{
+    border-color: grey;
+  }
+
+  #passInput:hover{
+    border-color: grey;
+  }
+
+  .blinking{
+    animation:blinkingText 1.5s infinite;
+}
+@keyframes blinkingText{
+    0%{     color: rgb(34, 208, 28);    }
+    49%{    color: rgb(34, 208, 28);  }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: rgb(34, 208, 28);     }
+}
