@@ -28,15 +28,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-    - run: ng build --prod --output-path=dist --base-href="https://se491-softwareengineeringstudio.github.io/Mindful/"
-    - name: Publish generated content to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@3.5.9
-      with:
-        FOLDER : dist
-        branch: gh-pages
-        github_token : ${{ secrets.GITHUB_TOKEN }}
     - name: Run headless test
       uses: GabrielBB/xvfb-action@v1
       with:
         working-directory: ./ClientApp/
         run: npm test
+    - run: npm run build --prod --output-path=dist --base-href="https://se491-softwareengineeringstudio.github.io/Mindful/"
+    - name: Publish generated content to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4.3.3
+      with:
+        FOLDER : ./ClientApp/dist
+        branch: gh-pages
+        github_token : ${{ secrets.GITHUB_TOKEN }}
