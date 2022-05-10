@@ -13,7 +13,12 @@ import { LocalStorageService } from './services/local-storage.service';
 import { CreateAccountComponent } from './components/create-account/create-account.component';
 import { PreferencesFormComponent } from './components/preferences-form/preferences-form.component';
 import { ToastrModule } from 'ngx-toastr';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin
+]);
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +34,8 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    FullCalendarModule
   ],
   providers: [LocalStorageService, Storage],
   bootstrap: [AppComponent]
