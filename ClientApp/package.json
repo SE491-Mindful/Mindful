@@ -7,6 +7,7 @@
     "start": "ng serve",
     "start:electron": "ng build --base-href ./ && electron .",
     "build": "ng build",
+    "build:CI": "ng build --configuration production --base-href /Mindful/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
