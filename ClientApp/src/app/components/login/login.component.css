@@ -71,3 +71,10 @@
     99%{    color:transparent;  }
     100%{   color: rgb(34, 208, 28);     }
 }
+
+#userNameTerminal{
+  color: rgb(34, 208, 28);
+}
+#passTerminal{
+  color: rgb(34, 208, 28);
+}
