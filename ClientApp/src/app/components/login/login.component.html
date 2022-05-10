@@ -1,30 +1,39 @@
   <!-- Terminal -->
-<div id="main-terminal" class="terminal container">
+<div id="main-terminal" class="terminal container w-25 h-70">
     <div class="row">
-        <div class="col-12 mx-auto">
+        <div class="col-12 mx-auto" >
             <div class="d-flex flex-row mb-4 login-row">
-                <div class="p-1 input-group mx-auto col-6">
-                    <input [(ngModel)]="model.username" placeholder="Username" name="userInput" style="background-color: black; color:white" type="text" class="form-control p-1">
+                <div class="col-1" style="align-self:center">
+                    <div><p id="userNameTerminal">Username<span class="blinking">:</span></p></div>
+                </div>
+                <div class="p-1 input-group mx-auto col-6 ">
+                    <input [(ngModel)]="model.username" id="usernameInput" placeholder="" name="userInput" style="background-color: black; color:white" type="text" class="form-control p-1">
                 </div>
             </div>
     
             <div class="d-flex flex-row mb-4 login-row">
+                <div class="col-1" style="align-self:center">
+                    <div ><p id="passTerminal">Password<span class="blinking">:</span></p></div>
+                </div>
                 <div class="p-1 input-group mx-auto col-6">
-                    <input [(ngModel)]="model.password" placeholder="Password" name="userInput" style="background-color: black; color:white" type="text" class="form-control p-1">
+                    <input [(ngModel)]="model.password" id="passInput" placeholder="" name="userInput" style="background-color: black; color:white" type="text" class="form-control p-1">
                 </div>
             </div>
     
             <div class="d-flex flex-row mb-4 login-row">
-                <div class="mx-auto col-12">
-                    <button (click)="login()" class="btn-lg btn-block btn-primary">Login</button>
+                <div class="mx-auto col-3">
+                    <button (click)="login()" class="btn btn-block btn-black">./Login</button>
+                </div>
+                <div id="createAccountLink" class="mx-auto col-6">
+                    <a (click)="createAccount()" class="btn btn-block btn-black border-white">./Create Account</a>
                 </div>
             </div>
             
-            <div id="createAccountLink" class="d-flex flex-row float-right mb-4 login-row">
+           <!-- <div id="createAccountLink" class="d-flex flex-row float-right mb-4 login-row">
                 <div class="mx-auto col-12">
-                    <a (click)="createAccount()" class="">Create Account</a>
+                    <a (click)="createAccount()" class="btn btn-block btn-black border-white">Create Account</a>
                 </div>
-            </div>
+            </div>-->
     
             <div id="meeting-info">
                 <div class="d-flex flex-row"></div>
