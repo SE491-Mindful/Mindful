@@ -5,12 +5,14 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: 
+     - main
   pull_request:
-    branches: [ main ]
+    branches: 
+     - main
 
 jobs:
-  build:
+  build-test-deploy:
 
     runs-on: ubuntu-latest 
     defaults:
@@ -37,6 +39,5 @@ jobs:
     - name: Publish generated content to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.3.3
       with:
-        FOLDER : ./ClientApp/dist
         branch: gh-pages
-        github_token : ${{ secrets.GITHUB_TOKEN }}  
+        folder : ./ClientApp/dist
