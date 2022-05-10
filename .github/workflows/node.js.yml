@@ -33,7 +33,7 @@ jobs:
       with:
         working-directory: ./ClientApp/
         run: npm test
-    - run: npm run build --prod --output-path --base-href=href="/Mindful/"
+    - run: npm run build --prod --output-path --base-href="/Mindful/"
     - name: Publish generated content to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.3.3
       with:
