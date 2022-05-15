@@ -7,7 +7,7 @@
 /bazel-out
 
 # Electron Build Output
-ClientApp/out
+/out
 
 # Node
 /node_modules
