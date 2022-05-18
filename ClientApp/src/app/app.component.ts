@@ -11,7 +11,7 @@ export class AppComponent {
   constructor (private storage: LocalStorageService) {
   }
 
-  doSometing = () => {
+  doSomething = () => {
     return true;
   };
 }

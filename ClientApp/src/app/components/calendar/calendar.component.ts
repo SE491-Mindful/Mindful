@@ -8,6 +8,18 @@ import { CalendarOptions } from '@fullcalendar/angular';
 })
 export class CalendarComponent {
   calendarOptions: CalendarOptions = {
-    initialView: 'dayGridMonth'
+    initialView: 'dayGridMonth',
+    headerToolbar: {
+      center: 'addEventButton'
+    },
+    customButtons: {
+      addEventButton: {
+        text: 'add event...',
+        click: function () {
+          const dateStr = console.log('Enter a date in YYYY-MM-DD format');
+          return dateStr;
+        }
+      }
+    }
   };
 }
