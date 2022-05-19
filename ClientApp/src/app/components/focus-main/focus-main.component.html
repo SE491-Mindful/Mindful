@@ -1,0 +1,18 @@
+<div class="container h-100 w-100" style="border: 1px dotted red">
+    <div class="row h-25"></div>
+        <input *ngIf="!this.focusStarted" [(ngModel)]="this.focusMinutes" name="focus-hours-input" class="center-page-button mb-5 w-25 focus-time-input" placeholder="Minutes" type="number">
+        
+        <div *ngIf="this.focusStarted" class="focus-label-countdown w-100" style="border: 1px dotted red">
+            <!-- Hours -->
+            <label for="focusHours" class="w-25">{{this.focusHours}} hr</label>
+            <span>|</span>
+            <!-- Minutes -->
+            <label for="focusMinutes" class="w-50">{{this.focusMinutes}} min</label>
+            <span>|</span>
+            <!-- Seconds -->
+            <label for="focusSeconds" class="w-25">{{this.focusSeconds}} secs</label>
+        </div>
+
+    <button *ngIf="this.focusStarted" (click)="endFocus()" class="circle-button center-page-button btn btn-danger">Cancel</button>
+    <button *ngIf="!this.focusStarted" (click)="startFocus()" class="circle-button center-page-button btn btn-primary">Start</button>
+</div>

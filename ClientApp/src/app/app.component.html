@@ -1,11 +1,13 @@
 <div id="main-content" class="container h-100 w-100">
-  <div class="row w-100 mt-5">
+  <div id="app-header" class="row w-100"></div>
+  <div class="row w-100">
     <div class="col-12">
+      <app-focus-button class="float-right mr-3"></app-focus-button>
       <app-preferences-button class="float-right"></app-preferences-button>
     </div>
   </div>
-  <div class="row h-100 w-100">
-    <div class="col-6 mx-auto">
+  <div id="main-center-content" class="row w-100">
+    <div class="col-12 mx-auto">
       <router-outlet></router-outlet>  
     </div>
   </div>

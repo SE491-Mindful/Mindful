@@ -14,7 +14,9 @@ import { CreateAccountComponent } from './components/create-account/create-accou
 import { PreferencesFormComponent } from './components/preferences-form/preferences-form.component';
 import { ToastrModule } from 'ngx-toastr';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import dayGridPlugin from '@fullcalendar/daygrid';
+import { FocusMainComponent } from './components/focus-main/focus-main.component';
+import { FocusButtonComponent } from './components/focus-button/focus-button.component'; // a plugin!
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin
@@ -27,7 +29,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     PreferencesButtonComponent,
     PreferencesMainComponent,
     CreateAccountComponent,
-    PreferencesFormComponent
+    PreferencesFormComponent,
+    FocusMainComponent,
+    FocusButtonComponent
   ],
   imports: [
     BrowserModule,

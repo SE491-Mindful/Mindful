@@ -1,0 +1,32 @@
+
+.circle-button {
+    height: calc(100vh / 6);
+    width: calc(100vh / 6);
+    border-radius: 50%;
+}
+
+.focus-label-countdown {
+    font-size: 5vw;
+    color: #563D7C;
+    opacity: 75%;
+}
+
+.focus-time-input {
+    font-size: 100%;
+    scale: 1000%;
+    color: white;
+    background-color: #333333;
+    border-bottom: 1px solid white;
+    overflow: hidden;
+}
+
+.focus-date > svg {
+    color: white;
+}
+
+.center-page-button {
+    text-align: center;
+    margin: auto;
+    display: flex;
+    display: grid;
+}

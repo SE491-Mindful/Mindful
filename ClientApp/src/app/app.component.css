@@ -6,3 +6,27 @@
     z-index: 3 !important;
     position: fixed;
 }
+
+#main-center-content{
+    height: 95vh !important;
+    width: 95vw !important;
+}
+
+#app-header {
+    height: 2vh !important;
+}
+
+.appIcon {
+    color: white;
+    transition: transform 1.5s ease 0s;
+    transform: scale(2.5);
+}
+
+.appIcon:hover {
+    transform: rotate(180deg) scale(4.5);
+}
+
+.appIcon:hover::after{
+    transform: rotate(-180deg);
+
+}
