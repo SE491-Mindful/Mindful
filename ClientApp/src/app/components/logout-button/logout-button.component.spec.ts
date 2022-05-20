@@ -1,22 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { RouterService } from 'src/app/services/router.service';
 import { LogoutButtonComponent } from './logout-button.component';
 
 describe('LogoutButtonComponent', () => {
   let component: LogoutButtonComponent;
-  let fixture: ComponentFixture<LogoutButtonComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ LogoutButtonComponent ]
-    })
-    .compileComponents();
-  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LogoutButtonComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new LogoutButtonComponent({} as RouterService);
   });
 
   it('should create', () => {
