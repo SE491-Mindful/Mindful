@@ -1,13 +1,14 @@
-import { TestBed } from '@angular/core/testing';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 import { FirebaseService } from './firebase.service';
+import { RouterService } from './router.service';
+import { SessionStorageService } from './session-storage.service';
 
 describe('FirebaseService', () => {
   let service: FirebaseService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(FirebaseService);
+    service = new FirebaseService({} as AngularFirestore, {} as SessionStorageService, {} as RouterService);
   });
 
   it('should be created', () => {
