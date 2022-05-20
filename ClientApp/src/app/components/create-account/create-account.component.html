@@ -1,1 +1,48 @@
-<p>create-account works!</p>
+<div id="main-terminal" class="terminal container w-50 h-70">
+    <div class="row">
+        <div class="col-12 mx-auto">
+            <div class="d-flex flex-row mb-4 login-row">
+                <div class="col-2" style="align-self:center">
+                    <div><p id="userNameTerminal">Username<span class="blinking">:</span></p></div>
+                </div>
+                <div class="p-1 input-group mx-auto col-6 ">
+                    <input [(ngModel)]="this.model.username" id="usernameInput" placeholder="" name="userInput" style="background-color: black; color:white" type="text" class="form-control p-1">
+                </div>
+            </div>
+    
+            <div class="d-flex flex-row mb-4 login-row">
+                <div class="col-2" style="align-self:center">
+                    <div ><p id="passTerminal">Password<span class="blinking">:</span></p></div>
+                </div>
+                <div class="p-1 input-group mx-auto col-6">
+                    <input [(ngModel)]="this.model.password"  id="passInput" placeholder="" name="userInput" style="background-color: black; color:white" type="text" class="form-control p-1">
+                </div>
+            </div>
+
+            <div class="d-flex flex-row mb-4 login-row w-100">
+                <div class="col-2" style="align-self:center">
+                    <div ><p id="passTerminal">Confirm Password<span class="blinking">:</span></p></div>
+                </div>
+                <div class="p-1 input-group mx-auto col-6">
+                    <input  id="passInput" placeholder="" name="userInput" style="background-color: black; color:white" type="text" class="form-control p-1">
+                </div>
+            </div>
+    
+            <div class="d-flex flex-row mb-4 login-row">
+                <div id="createAccountLink" class="mx-auto col-12" >
+                    <a (click)="createAccount()" class="w-100 btn btn-block btn-black border-white">Create Account</a>
+                </div>
+            </div>
+            
+           <!-- <div id="createAccountLink" class="d-flex flex-row float-right mb-4 login-row">
+                <div class="mx-auto col-12">
+                    <a (click)="createAccount()" class="btn btn-block btn-black border-white">Create Account</a>
+                </div>
+            </div>-->
+    
+            <div id="meeting-info">
+                <div class="d-flex flex-row"></div>
+            </div>
+        </div>
+    </div>
+</div>

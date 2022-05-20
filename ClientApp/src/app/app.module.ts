@@ -20,6 +20,14 @@ import { FocusButtonComponent } from './components/focus-button/focus-button.com
 import { HeaderMainComponent } from './components/header-main/header-main.component';
 import { LogoutButtonComponent } from './components/logout-button/logout-button.component'; // a plugin!
 
+// firestore imports
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
+import { environment } from 'src/environments/environment';
+import { FirebaseService } from './services/firebase.service';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { FooterMainComponent } from './components/footer-main/footer-main.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin
 ]);
@@ -35,9 +43,13 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FocusMainComponent,
     FocusButtonComponent,
     HeaderMainComponent,
-    LogoutButtonComponent
+    LogoutButtonComponent,
+    FooterMainComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
     BrowserModule,
     FormsModule,
     AppRoutingModule,
@@ -45,7 +57,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ToastrModule.forRoot(),
     FullCalendarModule
   ],
-  providers: [LocalStorageService, Storage],
+  providers: [LocalStorageService, Storage, FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

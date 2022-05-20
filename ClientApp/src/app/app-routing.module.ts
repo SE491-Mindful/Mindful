@@ -32,8 +32,8 @@ const routes: Routes = [
     component: FocusMainComponent
   },
   {
-    path: '',
-    component: LoginComponent
+    path: '*',
+    redirectTo: AppRoutes.Login
   }
 ];
 

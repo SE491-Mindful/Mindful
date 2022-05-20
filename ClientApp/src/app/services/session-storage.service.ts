@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { AppSessionStorageKey } from '../constants/app.constants';
 import { PreferencesFormModel } from '../models/preferencesForm.model';
 
@@ -7,14 +8,17 @@ import { PreferencesFormModel } from '../models/preferencesForm.model';
   providedIn: 'root'
 })
 export class SessionStorageService {
+  public readonly authenticatedUser$ = new BehaviorSubject<string>('');
+
   // eslint-disable-next-line no-useless-constructor
   constructor () { }
 
-  setSocialUser = (user: string): void => {
+  setAuthenticatedUser = (user: string): void => {
+    this.authenticatedUser$.next(user);
     sessionStorage.setItem(AppSessionStorageKey.userName, user);
   };
 
-  getSocialUser = (): string => {
+  getAuthenticatedUser = (): string => {
     return sessionStorage.getItem(AppSessionStorageKey.userName) ?? '';
   };
 

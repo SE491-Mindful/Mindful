@@ -1,22 +1,32 @@
 /* eslint-disable no-undef */
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Howl } from 'howler';
 
 @Component({
   selector: 'app-focus-main',
   templateUrl: './focus-main.component.html',
   styleUrls: ['./focus-main.component.css']
 })
-export class FocusMainComponent {
+export class FocusMainComponent implements OnDestroy {
   focusHours: number = 0;
-  focusMinutes: number = 0;
+  focusMinutes: number = 15;
   focusSeconds: number = 0;
   focusStarted = false;
   countdown: NodeJS.Timeout | undefined;
   focusAnimationElement: Element | null = null;
+  focusSounds: Howl | undefined;
+
+  ngOnDestroy (): void {
+    this.countdown = undefined;
+    this.focusSounds?.stop();
+  }
 
   startFocus = () => {
     this.calculateFocusValues();
     this.focusStarted = true;
+
+    // Plays focus rain audio.
+    this.playFocusSounds();
 
     this.countdown = setInterval(() => {
       console.log('hours:' + this.focusHours);
@@ -67,5 +77,15 @@ export class FocusMainComponent {
     this.focusMinutes = 0;
     this.focusSeconds = 0;
     this.focusStarted = false;
+    this.focusSounds?.stop();
+  };
+
+  playFocusSounds = (): void => {
+    this.focusSounds = new Howl({
+      src: ['assets/focusNoises.wav'],
+      autoplay: true,
+      html5: true,
+      loop: true
+    });
   };
 }

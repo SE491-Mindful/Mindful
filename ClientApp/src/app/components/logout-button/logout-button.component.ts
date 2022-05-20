@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AppRoutes } from 'src/app/constants/app.constants';
+import { FirebaseService } from 'src/app/services/firebase.service';
 import { RouterService } from 'src/app/services/router.service';
 
 @Component({
@@ -9,11 +10,15 @@ import { RouterService } from 'src/app/services/router.service';
 })
 export class LogoutButtonComponent {
   // eslint-disable-next-line no-useless-constructor
-  constructor (private routerService: RouterService) {
+  constructor (
+    private routerService: RouterService,
+    private fireBaseService: FirebaseService) {
   }
 
   onClick = () => {
-    // TODO: logout the user and navigate to login page.
+    this.fireBaseService.logoutFirebaseUser();
+    // eslint-disable-next-line no-undef
+    sessionStorage.clear();
     this.routerService.navigate(AppRoutes.Login);
   };
 }

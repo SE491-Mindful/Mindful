@@ -1,17 +1,18 @@
 #main-content{
-    min-height: 98vh !important;
-    min-width: 100vw !important;
-    height: 95vh !important;
-    width: 95vw !important;
+    min-height: 90vh !important;
+    min-width: 98vw !important;
+    height: 90vh !important;
+    width: 98vw !important;
     z-index: 3 !important;
     position: fixed;
 }
 
 #main-center-content{
-    height: 95vh !important;
-    width: 95vw !important;
+    height: 90vh !important;
+    width: 98vw !important;
 }
 
 #app-header {
     height: 2vh !important;
+    min-width: 100vw !important;
 }
