@@ -11,6 +11,6 @@
             <label for="focusSeconds" class=""> {{this.focusSeconds}}</label>
         </div>
 
-    <button *ngIf="this.focusStarted" (click)="endFocus()" class="circle-button center-page-button btn btn-danger">Cancel</button>
-    <button *ngIf="!this.focusStarted" (click)="startFocus()" class="circle-button center-page-button btn btn-primary">Start</button>
+    <button *ngIf="this.focusStarted" (click)="endFocus()" class="circle-button center-page-button btn btn-danger"></button>
+    <button id="startFocusButton" *ngIf="!this.focusStarted" (click)="startFocus()" class="circle-button center-page-button btn btn-primary"></button>
 </div>

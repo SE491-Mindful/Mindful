@@ -12,10 +12,12 @@ export class FocusMainComponent {
   focusSeconds: number = 0;
   focusStarted = false;
   countdown: NodeJS.Timeout | undefined;
+  focusAnimationElement: Element | null = null;
 
   startFocus = () => {
     this.calculateFocusValues();
     this.focusStarted = true;
+
     this.countdown = setInterval(() => {
       console.log('hours:' + this.focusHours);
 
@@ -31,10 +33,16 @@ export class FocusMainComponent {
         this.focusSeconds = 59;
       }
 
+      if (this.focusAnimationElement == null) {
+        this.focusAnimationElement = document.getElementsByClassName('circle-button center-page-button btn btn-danger')[0];
+        this.focusAnimationElement?.setAttribute('class', 'circle-button center-page-button btn btn-danger center-page-button-animation');
+      }
+
       if (this.focusFinished()) this.endFocus();
 
       this.focusSeconds -= 1;
     }, 1000);
+
     console.log('Focus Started!');
   };
 
@@ -42,7 +50,9 @@ export class FocusMainComponent {
   calculateFocusValues = (): void => {
     const rawHours = this.focusMinutes / 60;
     if (rawHours > 1) {
-      const intHours = Math.round(rawHours);
+      const intHours = Math.floor(rawHours);
+
+      // inital values;
       this.focusHours = intHours;
       this.focusMinutes = Math.round(Math.abs((rawHours - intHours) * 60));
     }

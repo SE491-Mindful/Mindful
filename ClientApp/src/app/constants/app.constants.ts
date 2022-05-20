@@ -14,4 +14,11 @@ export const AppDefaultStorageObj = {
   test3: 'test3'
 };
 
-export const AppLocalStorageKey = 'MindfulData';
+export const AppSessionStorageKey = {
+  userName: 'UserName',
+  preferences: 'Preferences'
+};
+
+export const AppLocalStorageKey = {
+
+};
