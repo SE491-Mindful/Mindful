@@ -6,6 +6,9 @@
 /out-tsc
 /bazel-out
 
+# Electron Build Output
+/out
+
 # Node
 /node_modules
 npm-debug.log
