@@ -16,7 +16,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { FocusMainComponent } from './components/focus-main/focus-main.component';
-import { FocusButtonComponent } from './components/focus-button/focus-button.component'; // a plugin!
+import { FocusButtonComponent } from './components/focus-button/focus-button.component';
+import { HeaderMainComponent } from './components/header-main/header-main.component';
+import { LogoutButtonComponent } from './components/logout-button/logout-button.component'; // a plugin!
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin
@@ -31,7 +33,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CreateAccountComponent,
     PreferencesFormComponent,
     FocusMainComponent,
-    FocusButtonComponent
+    FocusButtonComponent,
+    HeaderMainComponent,
+    LogoutButtonComponent
   ],
   imports: [
     BrowserModule,

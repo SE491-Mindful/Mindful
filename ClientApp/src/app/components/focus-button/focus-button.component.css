@@ -1,0 +1,13 @@
+#meditateIcon {
+    color: rgb(117, 49, 249);
+    transform: scale(2.5);
+    transition: transform 1.5s ease 0s;
+}
+
+#meditateIcon:hover {
+    transform: rotate(180deg) scale(4.5);
+}
+
+#meditateIcon:hover::after {
+    transform: rotate(-180deg);
+}

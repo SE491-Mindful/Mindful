@@ -5,9 +5,15 @@
     border-radius: 50%;
 }
 
+#countdownTimerLabel{
+    position: absolute !important;
+    left: 0;
+    top: 0;
+}
+
 .focus-label-countdown {
     font-size: 5vw;
-    color: #563D7C;
+    color: white;
     opacity: 75%;
 }
 
@@ -15,6 +21,8 @@
     font-size: 100%;
     scale: 1000%;
     color: white;
+    box-shadow: none !important;
+    text-shadow: none !important;
     background-color: #333333;
     border-bottom: 1px solid white;
     overflow: hidden;

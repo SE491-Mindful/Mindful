@@ -42,8 +42,9 @@ export class FocusMainComponent {
   calculateFocusValues = (): void => {
     const rawHours = this.focusMinutes / 60;
     if (rawHours > 1) {
-      this.focusHours = Math.round(this.focusMinutes / 60);
-      this.focusMinutes = 60;
+      const intHours = Math.round(rawHours);
+      this.focusHours = intHours;
+      this.focusMinutes = Math.round(Math.abs((rawHours - intHours) * 60));
     }
   };
 
