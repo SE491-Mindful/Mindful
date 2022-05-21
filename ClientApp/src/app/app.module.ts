@@ -14,6 +14,7 @@ import { CreateAccountComponent } from './components/create-account/create-accou
 import { PreferencesFormComponent } from './components/preferences-form/preferences-form.component';
 import { ToastrModule } from 'ngx-toastr';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { HttpClientModule } from '@angular/common/http';
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -35,7 +36,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     AppRoutingModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    FullCalendarModule
+    FullCalendarModule,
+    HttpClientModule
   ],
   providers: [LocalStorageService, Storage],
   bootstrap: [AppComponent]
