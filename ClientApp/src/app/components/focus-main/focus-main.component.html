@@ -1,0 +1,16 @@
+<div class="container h-100 w-100">
+    <div class="row h-25"></div>
+        <input *ngIf="!this.focusStarted" [(ngModel)]="this.focusMinutes" name="focus-hours-input" class="center-page-button mb-5 w-25 focus-time-input" placeholder="Minutes" type="number">
+        
+        <div id="countdownTimerLabel" *ngIf="this.focusStarted" class="focus-label-countdown ml-5 w-100 d-flex flex-row">
+            <!-- Hours -->
+            <label *ngIf="this.focusHours > 0" for="focusHours" class="">{{this.focusHours}}:</label>
+            <!-- Minutes -->
+            <label for="focusMinutes" class=""> {{this.focusMinutes}}:</label>
+            <!-- Seconds -->
+            <label for="focusSeconds" class=""> {{this.focusSeconds}}</label>
+        </div>
+
+    <button *ngIf="this.focusStarted" (click)="endFocus()" class="circle-button center-page-button btn btn-danger"></button>
+    <button id="startFocusButton" *ngIf="!this.focusStarted" (click)="startFocus()" class="circle-button center-page-button btn btn-primary"></button>
+</div>

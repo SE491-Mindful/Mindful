@@ -1,0 +1,9 @@
+#logoutIcon {
+    color: whitesmoke;
+    transform: scale(2.5);
+    transition: transform 1.5s ease 0s;
+}
+
+#logoutIcon:hover {
+    transform: scale(4.5);
+}

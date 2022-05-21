@@ -1,13 +1,21 @@
-<div id="main-content" class="container h-100 w-100">
-  <div class="row w-100 mt-5">
-    <div class="col-12">
-      <app-preferences-button class="float-right"></app-preferences-button>
+  <div id="app-header" class="container">
+    <div  class="row w-100 mt-4 d-flex flex-row-reverse">
+      <app-header-main></app-header-main>
     </div>
   </div>
-  <div class="row h-100 w-100">
-    <div class="col-6 mx-auto">
+
+  <div id="main-content" class="container mt-4">
+  <div class="row w-100">
+    <div class="col-12">
+    </div>
+  </div>
+  <div id="main-center-content" class="row w-100">
+    <div class="col-12 mx-auto">
       <router-outlet></router-outlet>  
     </div>
+  </div>
+  <div class="">
+    <app-footer-main></app-footer-main>
   </div>
 </div>
 
