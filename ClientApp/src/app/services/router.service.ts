@@ -2,14 +2,20 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-useless-constructor */
 import { Injectable } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, Subject } from 'rxjs';
+import { AppRoutes } from '../constants/app.constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RouterService {
+  public readonly isLoginRoute$ = new Subject<boolean>();
+  public readonly isFocusRoute$ = new Subject<boolean>();
+  public readonly isPreferencesRoute$ = new Subject<boolean>();
+
   constructor (private router: Router) {
+    this.createRouteSubscriptions();
   }
 
   // function that handles the navigation on a successful authentication into Mindful.
@@ -22,11 +28,15 @@ export class RouterService {
     this.router.navigate([location]);
   };
 
-  checkAuthentication = () => {
+  // creates a subscription that will notifiy when the route is the login route.
+  private createRouteSubscriptions = (): void => {
     this.router.events
-      .pipe(filter(event => event instanceof NavigationStart)
+      .pipe(filter(event => event instanceof NavigationEnd)
       )
-      .subscribe(() => {
+      .subscribe((event: any) => {
+        this.isLoginRoute$.next(event.url.includes(AppRoutes.Login));
+        this.isFocusRoute$.next(event.url.includes(AppRoutes.Focus));
+        this.isPreferencesRoute$.next(event.url.includes(AppRoutes.Preferences));
       });
   };
 }

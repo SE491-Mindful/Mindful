@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { IUser } from 'src/app/models/firebase/i-user';
 import { FirebaseService } from 'src/app/services/firebase.service';
 
@@ -11,11 +12,19 @@ export class CreateAccountComponent {
   model = {} as IUser;
 
   // eslint-disable-next-line no-useless-constructor
-  constructor (private fireStore: FirebaseService) { }
+  constructor (
+    private toastrService: ToastrService,
+    private fireStore: FirebaseService) { }
 
-  createAccount () {
+  async createAccount () {
     // this.fireStore.createUser(this.model);
-    this.fireStore.createUserFirebase(this.model.username, this.model.password);
+    const result = await this.fireStore.createUserFirebase(this.model.username, this.model.password);
+
+    if (!result.success) {
+      this.toastrService.error(result.error.errorMessage);
+    } else {
+      this.toastrService.success('Account Created Successfully');
+    }
     console.log('created clicked!');
   };
 }

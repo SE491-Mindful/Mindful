@@ -29,8 +29,6 @@ export class FocusMainComponent implements OnDestroy {
     this.playFocusSounds();
 
     this.countdown = setInterval(() => {
-      console.log('hours:' + this.focusHours);
-
       // if minutes hits 0, decrement hours
       if (this.focusMinutes === 0 && this.focusHours > 0) {
         this.focusHours -= 1;
@@ -43,6 +41,7 @@ export class FocusMainComponent implements OnDestroy {
         this.focusSeconds = 59;
       }
 
+      // attempt to retrieve HTMLElement from DOM and swap it's classes for the pulsing styling ones.
       if (this.focusAnimationElement == null) {
         this.focusAnimationElement = document.getElementsByClassName('circle-button center-page-button btn btn-danger')[0];
         this.focusAnimationElement?.setAttribute('class', 'circle-button center-page-button btn btn-danger center-page-button-animation');

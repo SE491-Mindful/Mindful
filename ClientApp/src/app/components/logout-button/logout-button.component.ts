@@ -18,7 +18,6 @@ export class LogoutButtonComponent {
   onClick = () => {
     this.fireBaseService.logoutFirebaseUser();
     // eslint-disable-next-line no-undef
-    sessionStorage.clear();
     this.routerService.navigate(AppRoutes.Login);
   };
 }

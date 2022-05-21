@@ -1,69 +1,70 @@
 /* eslint-disable no-undef */
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { FirebaseCollectionKeys } from '../constants/app.constants';
-import { IUser } from '../models/firebase/i-user';
 
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, getAuth, signOut } from '@firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, getAuth, signOut, Auth, User } from '@firebase/auth';
 import { SessionStorageService } from './session-storage.service';
 import { RouterService } from './router.service';
+import { ICreateUserResultModel } from '../models/i-createUser-result.model';
+import { ILoginUserResultModel } from '../models/i-loginUser-result.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
-  // eslint-disable-next-line no-useless-constructor
-  auth: any;
-  // eslint-disable-next-line no-useless-constructor
+  auth: Auth;
+  authUser: User | undefined;
+
   constructor (
     private store: AngularFirestore,
     private sessionStorage: SessionStorageService,
     private routerService: RouterService) {
     this.auth = getAuth();
 
-    this.auth.onAuthStateChanged((user: { email: string; }) => {
+    // Sets up state change around auth and does some things for our app based on those changes, mainly clearing our session storage.
+    this.auth.onAuthStateChanged((user) => {
       if (user) {
-        this.sessionStorage.setAuthenticatedUser(user.email);
+        this.authUser = user;
+        this.sessionStorage.setAuthenticatedUser(user.email ?? '');
         this.routerService.navigateFromLogin();
       } else {
-        this.sessionStorage.authenticatedUser$.next('');
+        this.authUser = undefined;
       }
     });
   };
 
-  createUser (user: IUser) {
-    user.id = this.store.createId();
-    user.createdDate = new Date();
-    user.modifiedDate = new Date();
-
-    this.store.firestore.collection(FirebaseCollectionKeys.users)
-      .add(user)
-      .catch((e) => {
-        throw new Error('Error attempting to add user to database.');
-      }).then(() => {
+  // Creates a user in the Firebase db to store these credentials safely for us, abstracting all complexity of login for us.
+  createUserFirebase = (email: string, password: string): Promise<ICreateUserResultModel> => {
+    return createUserWithEmailAndPassword(this.auth, email, password)
+      .then((userCredential) => {
         console.log('Added user successfully to database.');
-      });
-  }
-
-  createUserFirebase = (email: string, password: string) => {
-    createUserWithEmailAndPassword(this.auth, email, password)
-      .then((userCredential) => {
+        return { success: true } as ICreateUserResultModel;
       })
-      .catch((error) => {
-        throw new Error('Status Code: ' + error.code + 'Error Message: ' + error.message);
+      .catch((error : Error) => {
+        console.error('Failed to Create User.');
+        return { success: false, error: { errorMessage: error.message } } as ICreateUserResultModel;
       });
   };
 
-  loginEmailFirebase = (email: string, password: string) => {
-    signInWithEmailAndPassword(this.auth, email, password)
+  // Logs into firebsae with an existing username and email / not 3rd party auth... Firebsae stores these credentials safely for us.
+  loginEmailFirebase = (email: string, password: string): Promise<ILoginUserResultModel> => {
+    return signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
+        console.log('User authenticated successfully with database.');
+        return { success: true } as ILoginUserResultModel;
       })
-      .catch((error) => {
-        throw new Error('Status Code: ' + error.code + 'Error Message: ' + error.message);
+      .catch((error : Error) => {
+        console.error('Failed to Create User.');
+        return { success: false, error: { errorMessage: error.message } } as ILoginUserResultModel;
       });
   };
+
+  // TODO: implement google auth through firebase.. there's a nifty tutorial on their firebase console under authentication.
 
   logoutFirebaseUser = () => {
-    signOut(this.auth);
+    if (this.authUser) {
+      signOut(this.auth);
+      this.sessionStorage.clear();
+    }
   };
 }

@@ -32,6 +32,10 @@ const routes: Routes = [
     component: FocusMainComponent
   },
   {
+    path: '**',
+    redirectTo: AppRoutes.Login
+  },
+  {
     path: '*',
     redirectTo: AppRoutes.Login
   }

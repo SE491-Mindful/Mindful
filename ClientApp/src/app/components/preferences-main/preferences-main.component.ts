@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { AppRoutes } from 'src/app/constants/app.constants';
 import { PreferencesFormModel } from 'src/app/models/preferencesForm.model';
 import { RouterService } from 'src/app/services/router.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
@@ -20,13 +21,10 @@ export class PreferencesMainComponent {
     private sessionStorageService: SessionStorageService) {
   }
 
-  cancel = () => {
-    this.routerService.navigate('login');
-  };
-
   save = () => {
     this.toastrService.success('Preferences Saved.');
     this.sessionStorageService.setPreferences(this.model);
+    this.routerService.navigate(AppRoutes.Calendar);
     console.log(JSON.stringify(this.model));
   };
 }

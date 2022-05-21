@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AppSessionStorageKey } from '../constants/app.constants';
 import { PreferencesFormModel } from '../models/preferencesForm.model';
 
@@ -8,13 +8,14 @@ import { PreferencesFormModel } from '../models/preferencesForm.model';
   providedIn: 'root'
 })
 export class SessionStorageService {
-  public readonly authenticatedUser$ = new BehaviorSubject<string>('');
+  // eslint-disable-next-line no-useless-constructor
+  public readonly isUserAuthenticated$ = new Subject<boolean>();
 
   // eslint-disable-next-line no-useless-constructor
   constructor () { }
 
   setAuthenticatedUser = (user: string): void => {
-    this.authenticatedUser$.next(user);
+    this.isUserAuthenticated$.next(true);
     sessionStorage.setItem(AppSessionStorageKey.userName, user);
   };
 
@@ -29,5 +30,10 @@ export class SessionStorageService {
   getPreferences = (): PreferencesFormModel => {
     const preferences = sessionStorage.getItem(AppSessionStorageKey.preferences.toString()) ?? '';
     return (preferences.length > 0) ? JSON.parse(preferences) as PreferencesFormModel : {} as PreferencesFormModel;
+  };
+
+  clear = (): void => {
+    this.isUserAuthenticated$.next(false);
+    sessionStorage.clear();
   };
 }

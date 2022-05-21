@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
+import { RouterService } from 'src/app/services/router.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 
 @Component({
@@ -8,10 +9,17 @@ import { SessionStorageService } from 'src/app/services/session-storage.service'
   styleUrls: ['./header-main.component.css']
 })
 export class HeaderMainComponent {
-  loggedInUser: BehaviorSubject<string>;
+  isLoginRoute$: Subject<boolean>;
+  isPreferencesRoute$: Subject<boolean>;
+  isFocusRoute$: Subject<boolean>;
+  isUserAuthenticated$: Subject<boolean>;
 
-  // eslint-disable-next-line no-useless-constructor
-  constructor (private sessionStorageService: SessionStorageService) {
-    this.loggedInUser = sessionStorageService.authenticatedUser$;
+  constructor (
+    private sessionStoreService: SessionStorageService,
+    private routerService: RouterService) {
+    this.isUserAuthenticated$ = this.sessionStoreService.isUserAuthenticated$;
+    this.isLoginRoute$ = this.routerService.isLoginRoute$;
+    this.isFocusRoute$ = this.routerService.isFocusRoute$;
+    this.isPreferencesRoute$ = this.routerService.isPreferencesRoute$;
   }
 }
