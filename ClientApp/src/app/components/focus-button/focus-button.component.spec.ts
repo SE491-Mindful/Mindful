@@ -5,7 +5,7 @@ describe('FocusButtonComponent', () => {
   let component: FocusButtonComponent;
 
   beforeEach(() => {
-    component = new FocusButtonComponent({} as RouterService);
+    component = new FocusButtonComponent({ } as RouterService);
   });
 
   it('should create', () => {
