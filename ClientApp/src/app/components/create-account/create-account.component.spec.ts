@@ -1,22 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ToastrService } from 'ngx-toastr';
+import { FirebaseService } from 'src/app/services/firebase.service';
 import { CreateAccountComponent } from './create-account.component';
 
 describe('CreateAccountComponent', () => {
   let component: CreateAccountComponent;
-  let fixture: ComponentFixture<CreateAccountComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ CreateAccountComponent ]
-    })
-    .compileComponents();
-  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateAccountComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new CreateAccountComponent({} as ToastrService, {} as FirebaseService);
   });
 
   it('should create', () => {

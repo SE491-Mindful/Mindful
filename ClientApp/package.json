@@ -1,15 +1,20 @@
 {
-  "name": "client-app",
+  "name": "Mindful",
+  "author": "SE491-MindfulTeam",
+  "description": "Mental Health and Metric Tracking made Simple with Mindful.",
   "main": "app.js",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "start:electron": "ng build --base-href ./ && electron .",
+    "start": "electron-forge start",
+    "start:electron": "ng build && electron .",
     "build": "ng build",
+    "build:CI": "ng build --configuration production --base-href /Mindful/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "package": "electron-forge package",
+    "make": "ng build && electron-forge make"
   },
   "private": true,
   "dependencies": {
@@ -17,13 +22,18 @@
     "@angular/common": "~13.3.0",
     "@angular/compiler": "~13.3.0",
     "@angular/core": "~13.3.0",
+    "@angular/fire": "^7.3.0",
     "@angular/forms": "~13.3.0",
     "@angular/platform-browser": "~13.3.0",
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
     "@fullcalendar/angular": "^5.11.0",
     "@fullcalendar/daygrid": "^5.11.0",
+    "@fullcalendar/interaction": "^5.11.0",
     "countdown": "^2.6.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "firebase": "^9.8.1",
+    "howler": "^2.2.3",
     "ngx-countdown": "^13.0.0",
     "ngx-toastr": "^14.3.0",
     "rxjs": "~7.5.0",
@@ -40,10 +50,17 @@
     "@angular-eslint/template-parser": "13.2.1",
     "@angular/cli": "~13.3.3",
     "@angular/compiler-cli": "~13.3.0",
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63",
+    "@types/howler": "^2.2.7",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.17.0",
     "@typescript-eslint/parser": "5.17.0",
+    "electron": "18.2.3",
     "eslint": "^8.12.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
@@ -58,5 +75,30 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.6.2"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "Mindful"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": []
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }

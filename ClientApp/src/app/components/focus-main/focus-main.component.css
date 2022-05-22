@@ -1,0 +1,67 @@
+
+.circle-button {
+    height: calc(100vh / 6);
+    width: calc(100vh / 6);
+    border-radius: 50%;
+}
+
+#countdownTimerLabel{
+    position: absolute !important;
+    left: 0;
+    top: 0;
+}
+
+.focus-label-countdown {
+    font-size: 5vw;
+    color: white;
+    opacity: 75%;
+}
+
+.focus-time-input {
+    font-size: 100%;
+    scale: 1000%;
+    color: white;
+    text-align: center;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background-color: #333333;
+    border-bottom: 1px solid white;
+    overflow: hidden;
+}
+
+.focus-date > svg {
+    color: white;
+}
+
+.center-page-button {
+    text-align: center;
+    margin: auto;
+    display: flex;
+    display: grid;
+
+}
+
+.center-page-button-animation {
+    animation: pulse 10s ease-in-out 0s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+
+    }
+    to {
+        background-color: rgb(117, 49, 249);
+    }
+    50% { transform: scale(1.25); }
+}
+
+
+/* #logoutIcon {
+    color: whitesmoke;
+    transform: scale(2.5);
+    transition: transform 1.5s ease 0s;
+}
+
+#logoutIcon:hover {
+    transform: scale(4.5);
+} */

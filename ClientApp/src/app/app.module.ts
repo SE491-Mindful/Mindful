@@ -15,10 +15,27 @@ import { PreferencesFormComponent } from './components/preferences-form/preferen
 import { ToastrModule } from 'ngx-toastr';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { HttpClientModule } from '@angular/common/http';
+import { FocusMainComponent } from './components/focus-main/focus-main.component';
+import { FocusButtonComponent } from './components/focus-button/focus-button.component';
+import { HeaderMainComponent } from './components/header-main/header-main.component';
+import { LogoutButtonComponent } from './components/logout-button/logout-button.component';
+import { FooterMainComponent } from './components/footer-main/footer-main.component';
+
+import { environment } from 'src/environments/environment';
+
+// firestore imports
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { FirebaseService } from './services/firebase.service';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+
+// Full Calendar Imports:
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
-  dayGridPlugin
+  dayGridPlugin,
+  interactionPlugin
 ]);
 @NgModule({
   declarations: [
@@ -28,9 +45,17 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     PreferencesButtonComponent,
     PreferencesMainComponent,
     CreateAccountComponent,
-    PreferencesFormComponent
+    PreferencesFormComponent,
+    FocusMainComponent,
+    FocusButtonComponent,
+    HeaderMainComponent,
+    LogoutButtonComponent,
+    FooterMainComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
     BrowserModule,
     FormsModule,
     AppRoutingModule,
@@ -39,7 +64,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FullCalendarModule,
     HttpClientModule
   ],
-  providers: [LocalStorageService, Storage],
+  providers: [LocalStorageService, Storage, FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

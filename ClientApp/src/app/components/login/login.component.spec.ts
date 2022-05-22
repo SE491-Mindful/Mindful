@@ -1,15 +1,15 @@
-import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { FirebaseService } from 'src/app/services/firebase.service';
 import { RouterService } from 'src/app/services/router.service';
 
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
-  const router = <Router>{};
-  const routerService = new RouterService(router);
+  const routerService = {} as RouterService;
 
   beforeEach(async () => {
-    component = new LoginComponent(routerService);
+    component = new LoginComponent({} as ToastrService, routerService, {} as FirebaseService);
   });
 
   it('should create', () => {

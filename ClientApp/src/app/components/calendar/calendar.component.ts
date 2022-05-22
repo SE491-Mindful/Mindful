@@ -1,5 +1,8 @@
+import { formatDate } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { Calendar, CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 @Component({
   selector: 'app-calendar',
@@ -8,34 +11,111 @@ import { Calendar, CalendarOptions, FullCalendarComponent } from '@fullcalendar/
 })
 export class CalendarComponent {
   // references the #calendar in the template
-  @ViewChild('calendar') calendarComponent: FullCalendarComponent | undefined;
+  @ViewChild('fullcalendar') calendarComponent: FullCalendarComponent | undefined;
+
+  // eslint-disable-next-line no-useless-constructor
+  constructor () {
+  }
+
+  // function used in FullCalendarComponent CalendarOptions to setup the calendar's click event.
+  addEventClick = (): void => {
+    const currentDate = formatDate(Date.now(), 'YYYY-MM-dd', 'en_US');
+    // eslint-disable-next-line no-undef
+    const dateStr = prompt('Enter a date in YYYY-MM-DD format', currentDate);
+    const date = new Date(dateStr + 'T00:00:00'); // will be in local time
+
+    if (!isNaN(date.valueOf())) { // valid?
+      this.calendarComponent?.getApi().addEvent({
+        title: 'dynamic event',
+        start: date,
+        allDay: true
+      });
+
+      console.log(this.calendarComponent?.getApi().getEvents());
+      // eslint-disable-next-line no-undef
+      alert('Great. Now, update your database...');
+    } else {
+      // eslint-disable-next-line no-undef
+      alert('Invalid date.');
+    }
+  };
+
+  // TODO: implement me.
+  dateClick = (date: any): void => {
+    console.log(date);
+  };
+
+  // TODO: implement me.
+  eventClick = (event: any): void => {
+    console.log(event);
+  };
+
   calendarOptions: CalendarOptions = {
-    initialView: 'dayGridMonth',
-    headerToolbar: {
-      center: 'addEventButton'
+    plugins: [dayGridPlugin, interactionPlugin],
+    eventDisplay: '',
+    defaultRangeSeparator: '',
+    titleRangeSeparator: '',
+    defaultTimedEventDuration: '',
+    defaultAllDayEventDuration: {
+      day: 1
     },
+    forceEventDuration: true,
+    nextDayThreshold: '',
+    dayHeaders: true,
+    initialView: 'dayGridMonth',
+    aspectRatio: 1,
+    headerToolbar: {
+      start: 'addEventButton',
+      center: '',
+      end: 'dayGridMonth today prev next'
+    },
+    weekends: true,
+    weekNumbers: true,
+    // weekNumberCalculation:
+    editable: true,
+    nowIndicator: true,
+    // scrollTime: '',
+    // scrollTimeReset: true,
+    // slotMinTime: '',
+    // slotMaxTime: '',
+    // showNonCurrentDates: true,
+    // lazyFetching: true,
+    // startParam: '',
+    // endParam: '',
+    // timeZoneParam: '',
+    // timeZone: '',
+    // locales: [],
+    // locale: '',
+    themeSystem: 'bootstrap',
+    dragRevertDuration: 1,
+    // dragScroll: true,
+    // allDayMaintainDuration: true,
+    // unselectAuto: true,
+    // dropAccept: '',
+    // eventOrder: '',
+    dayPopoverFormat: {
+      month: '2-digit',
+      day: '2-digit',
+      year: '2-digit'
+    },
+    handleWindowResize: true,
+    windowResizeDelay: 0,
+    longPressDelay: 0,
+    eventDragMinDistance: 0,
+    expandRows: true,
+    navLinks: true,
+    selectable: true,
+    eventMinHeight: 0,
+    eventMinWidth: 0,
+    eventShortHeight: 0,
+
     customButtons: {
       addEventButton: {
-        text: 'add event...',
-        click: function () {
-          // eslint-disable-next-line no-undef
-          var dateStr = prompt('Enter a date in YYYY-MM-DD format');
-          var date = new Date(dateStr + 'T00:00:00'); // will be in local time
-
-          if (!isNaN(date.valueOf())) { // valid?
-            this.calendarComponent?.getApi().addEvent({ // TODO: add a function down below to utilize FullCalendar component
-              title: 'dynamic event',
-              start: date,
-              allDay: true
-            });
-            // eslint-disable-next-line no-undef
-            alert('Great. Now, update your database...');
-          } else {
-            // eslint-disable-next-line no-undef
-            alert('Invalid date.');
-          }
-        }
+        text: 'Log Metric',
+        click: this.addEventClick
       }
-    }
+    },
+    dateClick: this.dateClick.bind(this),
+    eventClick: this.addEventClick.bind(this)
   };
 }

@@ -1,3 +1,13 @@
-#modal-form {
-  padding: 10%;
+.form-group {
+  padding: 1rem;
+}
+
+#calendar-main {
+    position: relative;
+    scale:calc(100vh / 10000);
+    max-width: 70vw !important;
+    max-height: 70vh !important;
+    
+    padding: 25px;
+    color: white;
 }

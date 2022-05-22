@@ -13,7 +13,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form class="modal-form">
+      <form class="modal-form p3">
         <div class="form-group">
           <label for="formGroupExampleInput">Today's date (MM-DD-YYYY)</label>
           <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Date">
@@ -31,7 +31,11 @@
   </div>
 </div>
 
-<div>
-  <full-calendar [options]="calendarOptions"></full-calendar>
+<div class="container formMain">
+  <div class="row">
+    <div class="col-12">
+      <full-calendar #fullcalendar id="calendar-main" [options]="calendarOptions"></full-calendar>
+    </div>
+  </div>
 </div>
 

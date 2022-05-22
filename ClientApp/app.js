@@ -8,12 +8,11 @@ function createWindow () {
 
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
-
   mainWindow = new BrowserWindow({
-    x: 0,
-    y: 0,
-    width: size.width,
-    height: size.height,
+    x: size.width / 4,
+    y: size.height / 4,
+    width: size.width / 2,
+    height: size.height / 2,
     webPreferences: {
       nodeIntegration: true
     }
@@ -21,13 +20,13 @@ function createWindow () {
 
   mainWindow.loadURL(
     url.format({
-      pathname: path.join(__dirname, `/dist/client-app/index.html`),
+      pathname: path.join(__dirname, `/dist/index.html`),
       protocol: "file:",
       slashes: true
     })
   );
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // Open the DevTools. // DEBUG ONLY!
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null
