@@ -5,7 +5,8 @@ import { AppRoutes } from 'src/app/constants/app.constants';
 import { LoginModel } from 'src/app/models/loginInput.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { RouterService } from 'src/app/services/router.service';
-
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,7 +16,8 @@ export class LoginComponent {
   constructor (
     private toastrService: ToastrService,
     private routerService: RouterService,
-    private firestore: FirebaseService) {
+    private firestore: FirebaseService,
+    public auth: AngularFireAuth) {
   }
 
   model = {} as LoginModel;
@@ -33,4 +35,8 @@ export class LoginComponent {
   createAccount = (): void => {
     this.routerService.navigate(AppRoutes.CreateAccount);
   };
+
+  loginGoogle () {
+    this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  }
 }

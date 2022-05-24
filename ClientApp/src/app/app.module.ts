@@ -27,7 +27,8 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { FirebaseService } from './services/firebase.service';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { HomeComponent } from './home/home.component';
 
 // Full Calendar Imports:
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
@@ -50,7 +51,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FocusButtonComponent,
     HeaderMainComponent,
     LogoutButtonComponent,
-    FooterMainComponent
+    FooterMainComponent,
+    HomeComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -64,7 +66,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FullCalendarModule,
     HttpClientModule
   ],
-  providers: [LocalStorageService, Storage, FirebaseService],
+  providers: [LocalStorageService, Storage, FirebaseService, AngularFireAuth],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

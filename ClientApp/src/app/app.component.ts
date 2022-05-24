@@ -8,6 +8,8 @@ import { LocalStorageService } from './services/local-storage.service';
 import { initializeApp } from '@firebase/app';
 import { getAnalytics } from '@firebase/analytics';
 import { FirebaseConfig } from './constants/app.constants';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app';
 
 // Initialize Firebase
 const app = initializeApp(FirebaseConfig);
