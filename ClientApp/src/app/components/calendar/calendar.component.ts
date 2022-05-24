@@ -2,7 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+// import interactionPlugin from '@fullcalendar/interaction';
 
 @Component({
   selector: 'app-calendar',
@@ -23,10 +23,12 @@ export class CalendarComponent {
     // eslint-disable-next-line no-undef
     const dateStr = prompt('Enter a date in YYYY-MM-DD format', currentDate);
     const date = new Date(dateStr + 'T00:00:00'); // will be in local time
+    // eslint-disable-next-line no-undef
+    const duration = prompt('Enter the number of minutes you used Mindful today');
 
     if (!isNaN(date.valueOf())) { // valid?
       this.calendarComponent?.getApi().addEvent({
-        title: 'dynamic event',
+        title: 'New Meditation for ' + duration + ' minutes.',
         start: date,
         allDay: true
       });
@@ -40,18 +42,22 @@ export class CalendarComponent {
     }
   };
 
-  // TODO: implement me.
-  dateClick = (date: any): void => {
-    console.log(date);
+  dateClick = (info: { dateStr: string; resource: { id: string; }; }): void => {
+    // eslint-disable-next-line no-undef
+    alert('Date: ' + info.dateStr);
+    // eslint-disable-next-line no-undef
+    alert('Resource ID: ' + info.resource.id);
   };
 
   // TODO: implement me.
-  eventClick = (event: any): void => {
-    console.log(event);
+  eventClick = (info: { event: any; jsEvent: { preventDefault: () => void; }; }): void => {
+    const eventObj = info.event;
+    // eslint-disable-next-line no-undef
+    alert('Event: ' + eventObj.title);
   };
 
   calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin, interactionPlugin],
+    plugins: [dayGridPlugin],
     eventDisplay: '',
     defaultRangeSeparator: '',
     titleRangeSeparator: '',
@@ -111,11 +117,11 @@ export class CalendarComponent {
 
     customButtons: {
       addEventButton: {
-        text: 'Log Metric',
+        text: 'Log New Meditation',
         click: this.addEventClick
       }
     },
-    dateClick: this.dateClick.bind(this),
+    // dateClick: this.dateClick.bind(this),
     eventClick: this.addEventClick.bind(this)
   };
 }
