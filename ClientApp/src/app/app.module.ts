@@ -14,22 +14,28 @@ import { CreateAccountComponent } from './components/create-account/create-accou
 import { PreferencesFormComponent } from './components/preferences-form/preferences-form.component';
 import { ToastrModule } from 'ngx-toastr';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid';
+import { HttpClientModule } from '@angular/common/http';
 import { FocusMainComponent } from './components/focus-main/focus-main.component';
 import { FocusButtonComponent } from './components/focus-button/focus-button.component';
 import { HeaderMainComponent } from './components/header-main/header-main.component';
-import { LogoutButtonComponent } from './components/logout-button/logout-button.component'; // a plugin!
+import { LogoutButtonComponent } from './components/logout-button/logout-button.component';
+import { FooterMainComponent } from './components/footer-main/footer-main.component';
+
+import { environment } from 'src/environments/environment';
 
 // firestore imports
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-
-import { environment } from 'src/environments/environment';
 import { FirebaseService } from './services/firebase.service';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { FooterMainComponent } from './components/footer-main/footer-main.component';
+
+// Full Calendar Imports:
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
+
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
-  dayGridPlugin
+  dayGridPlugin,
+  interactionPlugin
 ]);
 @NgModule({
   declarations: [
@@ -55,7 +61,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     AppRoutingModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    FullCalendarModule
+    FullCalendarModule,
+    HttpClientModule
   ],
   providers: [LocalStorageService, Storage, FirebaseService],
   bootstrap: [AppComponent]
