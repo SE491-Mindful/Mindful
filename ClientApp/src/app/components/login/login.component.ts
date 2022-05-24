@@ -7,7 +7,6 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { RouterService } from 'src/app/services/router.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
-import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,8 +17,7 @@ export class LoginComponent {
     private toastrService: ToastrService,
     private routerService: RouterService,
     private firestore: FirebaseService,
-    public auth: AngularFireAuth,
-    public auth2: AuthService) {
+    public auth: AngularFireAuth) {
   }
 
   model = {} as LoginModel;

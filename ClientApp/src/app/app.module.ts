@@ -26,7 +26,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 import { environment } from 'src/environments/environment';
 import { FirebaseService } from './services/firebase.service';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { FooterMainComponent } from './components/footer-main/footer-main.component';
 import { HomeComponent } from './home/home.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -59,7 +59,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ToastrModule.forRoot(),
     FullCalendarModule
   ],
-  providers: [LocalStorageService, Storage, FirebaseService],
+  providers: [LocalStorageService, Storage, FirebaseService, AngularFireAuth],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
