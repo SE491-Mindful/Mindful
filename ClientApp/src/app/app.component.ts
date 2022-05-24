@@ -8,6 +8,9 @@ import { LocalStorageService } from './services/local-storage.service';
 import { initializeApp } from '@firebase/app';
 import { getAnalytics } from '@firebase/analytics';
 import { FirebaseConfig } from './constants/app.constants';
+import { AuthService } from './services/auth.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app';
 
 // Initialize Firebase
 const app = initializeApp(FirebaseConfig);
@@ -21,6 +24,6 @@ export let AUTHENTICATED_USER = '';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor (private storage: LocalStorageService) {
+  constructor (private storage: LocalStorageService, public auth: AngularFireAuth) {
   }
 }

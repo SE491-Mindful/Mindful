@@ -28,6 +28,7 @@ import { environment } from 'src/environments/environment';
 import { FirebaseService } from './services/firebase.service';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { FooterMainComponent } from './components/footer-main/footer-main.component';
+import { HomeComponent } from './home/home.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin
 ]);
@@ -44,7 +45,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FocusButtonComponent,
     HeaderMainComponent,
     LogoutButtonComponent,
-    FooterMainComponent
+    FooterMainComponent,
+    HomeComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
