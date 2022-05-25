@@ -1,3 +1,4 @@
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 import { FirebaseService } from './firebase.service';
@@ -8,7 +9,7 @@ describe('FirebaseService', () => {
   let service: FirebaseService;
 
   beforeEach(() => {
-    service = new FirebaseService({} as AngularFirestore, {} as SessionStorageService, {} as RouterService);
+    service = new FirebaseService({} as AngularFirestore, {} as AngularFireAuth, {} as SessionStorageService, {} as RouterService);
   });
 
   it('should be created', () => {

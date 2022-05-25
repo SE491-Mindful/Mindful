@@ -33,13 +33,13 @@ p {
 .clouds {
   stroke-width: 0;
   fill: #c2c3c4;
-  animation: move 25s ease-in-out 0s infinite alternate;
+  animation: move 120s ease-in-out 0s infinite alternate;
 }
 
 @keyframes move {
-  0% { transform: translate(-200px); }
-  50% { transform: scale(4.0); }
-  100% { transform: translateX(200px); }
+  0% { transform: translate(-1000px); }
+  50% { transform: scale(2.0); }
+  100% { transform: translateX(1000px); }
 }
 
 svg#clouds {

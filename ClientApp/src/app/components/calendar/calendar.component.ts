@@ -24,18 +24,16 @@ export class CalendarComponent {
     const dateStr = prompt('Enter a date in YYYY-MM-DD format', currentDate);
     const date = new Date(dateStr + 'T00:00:00'); // will be in local time
     // eslint-disable-next-line no-undef
-    const duration = prompt('Enter the number of minutes you used Mindful today');
+    const duration = prompt('Enter the number of minutes you were Mindful today');
 
     if (!isNaN(date.valueOf())) { // valid?
       this.calendarComponent?.getApi().addEvent({
-        title: 'New Meditation for ' + duration + ' minutes.',
+        title: 'Mindful for ' + duration + ' minutes.',
         start: date,
         allDay: true
       });
 
       console.log(this.calendarComponent?.getApi().getEvents());
-      // eslint-disable-next-line no-undef
-      alert('Great. Now, update your database...');
     } else {
       // eslint-disable-next-line no-undef
       alert('Invalid date.');

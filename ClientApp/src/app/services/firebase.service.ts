@@ -7,6 +7,8 @@ import { SessionStorageService } from './session-storage.service';
 import { RouterService } from './router.service';
 import { ICreateUserResultModel } from '../models/i-createUser-result.model';
 import { ILoginUserResultModel } from '../models/i-loginUser-result.model';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class FirebaseService {
 
   constructor (
     private store: AngularFirestore,
+    private angularFireAuth: AngularFireAuth,
     private sessionStorage: SessionStorageService,
     private routerService: RouterService) {
     this.auth = getAuth();
@@ -46,7 +49,7 @@ export class FirebaseService {
       });
   };
 
-  // Logs into firebsae with an existing username and email / not 3rd party auth... Firebsae stores these credentials safely for us.
+  // Logs into firebsae with an existing username and email / not 3rd party auth... Firebase stores these credentials safely for us.
   loginEmailFirebase = (email: string, password: string): Promise<ILoginUserResultModel> => {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
@@ -59,7 +62,17 @@ export class FirebaseService {
       });
   };
 
-  // TODO: implement google auth through firebase.. there's a nifty tutorial on their firebase console under authentication.
+  // Logs into firebase with a Google Popup.
+  loginGoogleFirebase = () => {
+    return this.angularFireAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then((userCredential) => {
+        console.log('User authenticated successfully with google.');
+        return { success: true } as ILoginUserResultModel;
+      }).catch((error: Error) => {
+        console.error('Failed to authenticate with Google.');
+        return { success: false, error: { errorMessage: error.message } } as ILoginUserResultModel;
+      });
+  };
 
   logoutFirebaseUser = () => {
     if (this.authUser) {

@@ -1,4 +1,3 @@
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ToastrService } from 'ngx-toastr';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { RouterService } from 'src/app/services/router.service';
@@ -10,7 +9,7 @@ describe('LoginComponent', () => {
   const routerService = {} as RouterService;
 
   beforeEach(async () => {
-    component = new LoginComponent({} as ToastrService, routerService, {} as FirebaseService, {} as AngularFireAuth);
+    component = new LoginComponent({} as ToastrService, routerService, {} as FirebaseService);
   });
 
   it('should create', () => {
