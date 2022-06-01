@@ -120,8 +120,8 @@ export class CalendarComponent {
         text: 'Log New Meditation',
         click: this.addEventClick
       }
-    },
+    }
     // dateClick: this.dateClick.bind(this),
-    eventClick: this.addEventClick.bind(this)
+    // eventClick: this.addEventClick.bind(this)
   };
 }
