@@ -13,7 +13,8 @@
 }
 
 #app-header {
-    z-index: 3 !important;
+    position: absolute;
+    z-index: 999 !important;
     height: 2vh !important;
     min-width: 100vw !important;
 }

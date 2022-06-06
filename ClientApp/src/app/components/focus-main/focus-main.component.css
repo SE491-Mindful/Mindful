@@ -21,12 +21,16 @@
     font-size: 100%;
     scale: 1000%;
     color: white;
+    background: linear-gradient(21deg, #10abff);
+    padding: 3px;
+    border-radius: 9999em;
     text-align: center;
     box-shadow: none !important;
     text-shadow: none !important;
     background-color: #333333;
     border-bottom: 1px solid white;
     overflow: hidden;
+    opacity: 50% !important;
 }
 
 .focus-date > svg {
@@ -54,14 +58,3 @@
     }
     50% { transform: scale(1.25); }
 }
-
-
-/* #logoutIcon {
-    color: whitesmoke;
-    transform: scale(2.5);
-    transition: transform 1.5s ease 0s;
-}
-
-#logoutIcon:hover {
-    transform: scale(4.5);
-} */

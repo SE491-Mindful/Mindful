@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, getAuth, signOut, Auth, User } from '@firebase/auth';
 import { SessionStorageService } from './session-storage.service';
@@ -9,6 +9,8 @@ import { ICreateUserResultModel } from '../models/i-createUser-result.model';
 import { ILoginUserResultModel } from '../models/i-loginUser-result.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
+import { EventInput } from '@fullcalendar/angular';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -79,5 +81,24 @@ export class FirebaseService {
       signOut(this.auth);
       this.sessionStorage.clear();
     }
+  };
+
+  saveCalendarEvent = (event:EventInput) => {
+    event.id = this.authUser?.uid;
+    this.store.collection('events').add(event);
+  };
+
+  getUserCalendarEvents = () => {
+    return this.getEventsCollection().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    );
+  };
+
+  private getEventsCollection = (): AngularFirestoreCollection<EventInput> => {
+    return this.store.collection('events', ref => ref.where('id', '==', this.authUser?.uid));
   };
 }

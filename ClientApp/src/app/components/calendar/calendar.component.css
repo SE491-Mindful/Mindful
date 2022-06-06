@@ -11,3 +11,21 @@
     padding: 25px;
     color: white;
 }
+
+#debugCalendarButton {
+  z-index: 9999;
+}
+
+#addEventDialog {
+  z-index: 999;
+  position: absolute;
+  left: 0vw;
+  top: 20vh; 
+  color: white;
+  border: none;
+  background-color: #333333;
+}
+
+#addEventDialog::backdrop {
+  background-color: black;
+}

@@ -10,19 +10,24 @@ import { getAnalytics } from '@firebase/analytics';
 import { FirebaseConfig } from './constants/app.constants';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
+import { RouterService } from './services/router.service';
+import { Observable } from 'rxjs';
 
 // Initialize Firebase
 const app = initializeApp(FirebaseConfig);
 const analytics = getAnalytics(app);
-
-export let AUTHENTICATED_USER = '';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor (private storage: LocalStorageService) {
+  isFocusRoute$: Observable<boolean>;
+  isLoginRoute$: Observable<boolean>;
+
+  constructor (private routerService: RouterService,
+    private storage: LocalStorageService) {
+    this.isFocusRoute$ = this.routerService.isFocusRoute$;
+    this.isLoginRoute$ = this.routerService.isLoginRoute$;
   }
 }

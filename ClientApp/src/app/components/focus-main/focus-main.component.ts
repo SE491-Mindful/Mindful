@@ -81,7 +81,7 @@ export class FocusMainComponent implements OnDestroy {
 
   playFocusSounds = (): void => {
     this.focusSounds = new Howl({
-      src: ['assets/focusNoises.wav'],
+      src: ['assets/summerNight.wav'],
       autoplay: true,
       html5: true,
       loop: true

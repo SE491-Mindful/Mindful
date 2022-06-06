@@ -28,11 +28,11 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { FirebaseService } from './services/firebase.service';
 import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { HomeComponent } from './home/home.component';
 
 // Full Calendar Imports:
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
-import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
+import interactionPlugin from '@fullcalendar/interaction';
+import { CalendarOverviewComponent } from './components/calendar-overview/calendar-overview.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -52,7 +52,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     HeaderMainComponent,
     LogoutButtonComponent,
     FooterMainComponent,
-    HomeComponent
+    CalendarOverviewComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
