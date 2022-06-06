@@ -20,7 +20,7 @@ export class RouterService {
 
   // function that handles the navigation on a successful authentication into Mindful.
   navigateFromLogin = () => {
-    this.router.navigate(['calendar']);
+    this.router.navigate([AppRoutes.Calendar]);
   };
 
   // wrapper to simplify navigate functionality on router.
