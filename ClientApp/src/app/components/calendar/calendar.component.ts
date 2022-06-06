@@ -4,6 +4,7 @@ import { CalendarOptions, EventInput, FullCalendarComponent } from '@fullcalenda
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { Timestamp } from 'firebase/firestore';
 import { Subject, takeUntil } from 'rxjs';
+import { PreferencesFormModel } from 'src/app/models/preferencesForm.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 // import interactionPlugin from '@fullcalendar/interaction';
 
@@ -23,10 +24,15 @@ export class CalendarComponent implements OnDestroy {
   isModalOpen = false;
   // Modal - END
 
+  userPreferences: PreferencesFormModel = {} as PreferencesFormModel;
   userEvents: any[] = [];
   $destroy = new Subject<boolean>();
   // eslint-disable-next-line no-useless-constructor
   constructor (private fireService: FirebaseService) {
+    this.fireService.getUserPreferences().subscribe(data => {
+      this.userPreferences = data[0] ?? {} as PreferencesFormModel;
+      this.description = this.userPreferences.trackingDescription;
+    });
   }
 
   closeModal = () => { this.isModalOpen = false; };
@@ -35,7 +41,7 @@ export class CalendarComponent implements OnDestroy {
 
   saveModal = () => {
     const event = {
-      title: 'Mindful for ' + this.duration + ' minutes.',
+      title: this.duration + ' minutes.',
       start: new Date(this.date + 'T00:00:00'),
       allDay: true
     } as EventInput;
@@ -151,7 +157,7 @@ export class CalendarComponent implements OnDestroy {
 
     customButtons: {
       addEventButton: {
-        text: 'Log New Meditation',
+        text: 'Add Log',
         click: this.addEventClick
       }
     },

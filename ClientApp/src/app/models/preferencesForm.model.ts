@@ -1,5 +1,6 @@
 
 export interface PreferencesFormModel {
-    emailAddress: string;
+    userId: string;
+    trackingDescription: string;
     enablePushNotifications: boolean;
 };

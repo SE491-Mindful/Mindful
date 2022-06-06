@@ -4,23 +4,46 @@
             <div class="container mt-5 h-100 w-100">
                 <div class="row h-100 mx-auto">
                     <div class="col-12 mx-auto">
-                        <app-preferences-form [ngModel]="this.model"></app-preferences-form>
-                    </div>
+                        <div id="preferencesForm">
+                            <div class="container">
+                              <div class="row">
+                                <div class="col">
+                                  <label for="trackingDescription">What would you like to track?</label>
+                                  <input [(ngModel)]="model.trackingDescription" class="form-control" type="text" id="trackingDescription" name="trackingDescription" placeholder="Description...">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col">
+                                  <!-- TODO: Additional Preferences (examples: Event Colors, calendar theme, include weekends?, defaults for new events?) -->
+                                </div>
+                              </div>
+                            </div>
+                          
+                            <!-- TODO: Push Notifications Preferences -->
+                              <!-- <div class="mb-3 form-check">
+                                  <input [(ngModel)]="model.enablePushNotifications" id="enablePushNotifications" type="checkbox" class="form-check-input" id="exampleCheck1">
+                                  <label class="form-check-label" for="exampleCheck1">Push Notifications</label>
+                              </div> -->
+                          
+                              <!-- <div *ngIf="model.enablePushNotifications">
+                                  <div class="mb-3">
+                                      <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                      <input [(ngModel)]="model.emailAddress" id="emailAddress" name="emailAddress" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    </div>
+                              </div> -->
+                          
+                              <div>
+                                <pre>{{model |json }}</pre>
+                              </div>
+                          </div>                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row h-25" >
-        <div class="col-2 h-100">
-            <div class="d-flex flex-column bd-highlight mb-3 h-100">
-                <!-- <button (click)="cancel()" class="btn btn-secondary mt-auto p-2 mb-3 bd-highlight">Discard</button> -->
-            </div>
-        </div>
-        <div class="col-8"></div>
-        <div class="col-2 h-100">
-            <div class="d-flex flex-column bd-highlight mb-3 h-100">
-                <button (click)="save()" class="btn btn-primary mt-auto p-2 mb-3 bd-highlight">Save</button>
-            </div>
+    <div class="row mt-5" >
+        <div class="col-12">
+            <button (click)="cancel()" class="btn btn-secondary float-left">Cancel</button>
+                <button (click)="save()" class="btn btn-primary float-right bd-highlight">Save</button>
         </div>
     </div>
 </div>

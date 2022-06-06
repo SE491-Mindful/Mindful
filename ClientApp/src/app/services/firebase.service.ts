@@ -10,7 +10,8 @@ import { ILoginUserResultModel } from '../models/i-loginUser-result.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 import { EventInput } from '@fullcalendar/angular';
-import { map } from 'rxjs';
+import { first, map } from 'rxjs';
+import { PreferencesFormModel } from '../models/preferencesForm.model';
 
 @Injectable({
   providedIn: 'root'
@@ -96,6 +97,39 @@ export class FirebaseService {
         )
       )
     );
+  };
+
+  saveUserPreferences = (preferences: PreferencesFormModel) => {
+    this.getPreferencesCollection()
+      .snapshotChanges().subscribe(doc => {
+        if (doc.length > 0) {
+          const id = doc[0].payload.doc.id;
+          this.store.collection('preferences').doc(id).update(preferences);
+        } else {
+          this.store.collection('preferences').add(preferences);
+        }
+      });
+    // console.log(this.getPreferencesCollection().doc(this.authUser?.uid));
+    // if (this.getPreferencesCollection().doc(). > 0) {
+    //   this.store.collection('preferences').
+    // }
+    // preferences.userId = this.authUser?.uid ?? '';
+    // this.store.collection('')
+  };
+
+  getUserPreferences = () => {
+    return this.getPreferencesCollection().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      ),
+      first()
+    );
+  };
+
+  private getPreferencesCollection = (): AngularFirestoreCollection<PreferencesFormModel> => {
+    return this.store.collection('preferences', ref => ref.where('userId', '==', this.authUser?.uid));
   };
 
   private getEventsCollection = (): AngularFirestoreCollection<EventInput> => {
