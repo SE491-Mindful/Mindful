@@ -16,6 +16,11 @@ export class CalendarComponent implements OnDestroy {
   // references the #calendar in the template
   @ViewChild('fullcalendar') calendarComponent: FullCalendarComponent | undefined;
 
+  // OverviewModel
+  counter: number = 0;
+  flag: boolean = true;
+  Overview_description: string | undefined;
+  isOverviewModelOpen = false;
   // Modal- START
   description: string = 'How Long were you Mindful Today?';
   duration: number | undefined = undefined;
@@ -39,12 +44,21 @@ export class CalendarComponent implements OnDestroy {
       start: new Date(this.date + 'T00:00:00'),
       allDay: true
     } as EventInput;
-
+    this.counter += 1;
     this.calendarComponent?.getApi().addEvent(event);
     console.log(this.calendarComponent?.getApi().getEvents());
     this.fireService.saveCalendarEvent(event);
     this.closeModal();
+    if (this.counter > 20 && this.flag) {
+      this.Overview_description = 'You meditated ' + this.counter + ' time(s)';
+      this.showOverviewModal();
+      this.flag = false;
+    }
   };
+
+  closeOverviewModal = () => { this.isOverviewModelOpen = false; };
+
+  showOverviewModal = () => { this.isOverviewModelOpen = true; };
 
   ngOnDestroy (): void {
     this.userEvents = [];

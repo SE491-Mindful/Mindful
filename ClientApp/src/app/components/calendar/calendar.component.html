@@ -35,3 +35,18 @@
       </div>
   </div>
 </dialog>
+
+<dialog *ngIf="!!isOverviewModelOpen" id="addEventDialog"  #addEventDialog>
+  <div class="container h-100 float-left">
+      <div class="row">
+          <h1>Mindful Logger</h1>
+      </div>
+      <div class="row mb-3">
+          <p>{{Overview_description}}</p>
+      </div>
+      <div>
+        <button (click)="closeOverviewModal()" class="btn btn-secondary">Close</button>
+      </div>
+     
+  </div>
+</dialog>
