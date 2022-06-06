@@ -1,9 +1,10 @@
 import { formatDate } from '@angular/common';
-import { Component, ViewChild, OnDestroy } from '@angular/core';
-import { CalendarOptions, EventInput, FullCalendarComponent } from '@fullcalendar/angular';
+import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
+import { CalendarOptions, EventApi, FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { Timestamp } from 'firebase/firestore';
 import { Subject, takeUntil } from 'rxjs';
+import { CalendarEvent } from 'src/app/models/i-calendar-event.model';
 import { PreferencesFormModel } from 'src/app/models/preferencesForm.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 // import interactionPlugin from '@fullcalendar/interaction';
@@ -13,52 +14,37 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent implements OnDestroy {
+export class CalendarComponent implements OnInit, OnDestroy {
   // references the #calendar in the template
   @ViewChild('fullcalendar') calendarComponent: FullCalendarComponent | undefined;
 
   // Modal- START
   description: string = 'How Long were you Mindful Today?';
-  duration: number | undefined = undefined;
+  eventDescription: string | undefined = undefined;
+  eventColor: string | undefined = undefined;
   date:string | undefined = formatDate(Date.now(), 'YYYY-MM-dd', 'en_US');
   isModalOpen = false;
   // Modal - END
 
   userPreferences: PreferencesFormModel = {} as PreferencesFormModel;
   userEvents: any[] = [];
-  $destroy = new Subject<boolean>();
+  destroyed$ = new Subject<boolean>();
   // eslint-disable-next-line no-useless-constructor
   constructor (private fireService: FirebaseService) {
-    this.fireService.getUserPreferences().subscribe(data => {
-      this.userPreferences = data[0] ?? {} as PreferencesFormModel;
-      this.description = this.userPreferences.trackingDescription;
-    });
   }
-
-  closeModal = () => { this.isModalOpen = false; };
-
-  showModal = () => { this.isModalOpen = true; };
-
-  saveModal = () => {
-    const event = {
-      title: this.duration + ' minutes.',
-      start: new Date(this.date + 'T00:00:00'),
-      allDay: true
-    } as EventInput;
-
-    this.calendarComponent?.getApi().addEvent(event);
-    console.log(this.calendarComponent?.getApi().getEvents());
-    this.fireService.saveCalendarEvent(event);
-    this.closeModal();
-  };
 
   ngOnDestroy (): void {
     this.userEvents = [];
-    this.$destroy.next(true);
-    this.$destroy.complete();
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 
   ngOnInit () {
+    this.fireService.getUserPreferences().subscribe(data => {
+      this.userPreferences = data[0] ?? {} as PreferencesFormModel;
+      this.description = this.userPreferences.trackingDescription;
+    }, takeUntil(this.destroyed$));
+
     // This is a bit of a hack to convert Firebase Timestamp obj to DateTime objects in Javascript.. but it works for now.
     this.fireService.getUserCalendarEvents()
       .subscribe((data: any[]) => {
@@ -67,33 +53,63 @@ export class CalendarComponent implements OnDestroy {
         // this.userEvents.forEach(event => { event.start = '2022-06-10'; });
         this.requestCalendarData();
       },
-      takeUntil(this.$destroy));
+      takeUntil(this.destroyed$));
   }
 
-  requestCalendarData = () => {
-    // console.log('Calendar Events: ' + JSON.stringify(this.calendarComponent?.getApi().getEvents()));
-    // console.log('Firebase Events: ' + JSON.stringify(this.userEvents));
-    this.calendarComponent?.getApi()?.batchRendering(() => {
-      this.calendarComponent?.getApi()?.removeAllEvents();
-      this.calendarComponent?.getApi()?.addEventSource(this.userEvents);
-    });
+  // MODAL functions - START
+  closeModal = () => { this.isModalOpen = false; };
+
+  showModal = () => { this.isModalOpen = true; };
+
+  saveModal = async () => {
+    const event = {
+      title: this.eventDescription,
+      start: new Date(this.date + 'T00:00:00'),
+      color: this.eventColor,
+      allDay: true
+    } as CalendarEvent;
+
+    this.calendarComponent?.getApi().addEvent(event);
+    await this.fireService.saveCalendarEvent(event);
+    this.closeModal();
   };
 
+  // MODAL functions - END
+
+  dateClick = (info: any) => {
+    // console.log(info.date);
+    this.date = formatDate(info.date, 'YYYY-MM-dd', 'en_US');
+    // console.log(this.date);
+  };
+
+  // START - CalendarOptions obj configuration and event functions.
   // function used in FullCalendarComponent CalendarOptions to setup the calendar's click event.
-  addEventClick = (): void => { this.isModalOpen = true; };
-
-  dateClick = (info: { dateStr: string; resource: { id: string; }; }): void => {
-    // eslint-disable-next-line no-undef
-    alert('Date: ' + info.dateStr);
-    // eslint-disable-next-line no-undef
-    alert('Resource ID: ' + info.resource.id);
+  addEventClick = (): void => {
+    this.eventDescription = undefined;
+    this.isModalOpen = true;
   };
 
-  // TODO: implement me.
-  eventClick = (info: { event: any; jsEvent: { preventDefault: () => void; }; }): void => {
+  eventClick = (info: { event: EventApi; jsEvent: { preventDefault: () => void; }; }): void => {
     const eventObj = info.event;
-    // eslint-disable-next-line no-undef
-    alert('Event: ' + eventObj.title);
+    console.log(eventObj);
+
+    this.date = formatDate(eventObj.start ?? Date.now(), 'YYYY-MM-dd', 'en_US');
+    this.eventDescription = eventObj.title;
+    this.showModal();
+  };
+
+  eventDrag = async (info: { event: EventApi; jsEvent: { preventDefault: () => void; }; }): Promise<void> => {
+    const eventObj = info.event;
+
+    const newEvent = {
+      id: eventObj.id,
+      title: eventObj.title,
+      start: eventObj.start,
+      color: eventObj.backgroundColor,
+      allDay: eventObj.allDay
+    } as CalendarEvent;
+
+    await this.fireService.saveCalendarEvent(newEvent);
   };
 
   calendarOptions: CalendarOptions = {
@@ -161,7 +177,40 @@ export class CalendarComponent implements OnDestroy {
         click: this.addEventClick
       }
     },
-    // dateClick: this.dateClick.bind(this),
-    eventClick: this.addEventClick.bind(this)
+    dateClick: this.dateClick.bind(this),
+    eventClick: this.eventClick.bind(this),
+    eventDrop: this.eventDrag.bind(this)
+  };
+  // END - CalendarOptions obj configuration and event functions.
+
+  // START - Helper functions for calendar component.
+  colorSelected = (eventColor: string): void => {
+    switch (eventColor) {
+      case 'color1': this.eventColor = this.userPreferences.color1;
+        break;
+      case 'color2': this.eventColor = this.userPreferences.color2;
+        break;
+
+      case 'color3': this.eventColor = this.userPreferences.color3;
+        break;
+
+      case 'color4': this.eventColor = this.userPreferences.color4;
+        break;
+
+      case 'color5': this.eventColor = this.userPreferences.color5;
+        break;
+
+      case 'color6': this.eventColor = this.userPreferences.color6;
+        break;
+
+      default: this.eventColor = this.userPreferences.color1;
+    }
+  };
+
+  private requestCalendarData = () => {
+    this.calendarComponent?.getApi()?.batchRendering(() => {
+      this.calendarComponent?.getApi()?.removeAllEvents();
+      this.calendarComponent?.getApi()?.addEventSource(this.userEvents);
+    });
   };
 }

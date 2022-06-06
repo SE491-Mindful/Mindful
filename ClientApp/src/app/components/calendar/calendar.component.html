@@ -23,10 +23,29 @@
           <input [(ngModel)]="date" class="form-control" id="eventDateInput" type="date" placeholder="YYYY/MM/DD">
       </div>
       <div class="row mb-3">
-          <label for="eventMinutesInput">Duration</label>
-          <input [(ngModel)]="duration" class="form-control" id="eventMinutesInput" type="number" placeholder="minutes">
+          <label for="eventMinutesInput">Event Description</label>
+          <input [(ngModel)]="eventDescription" class="form-control" id="eventMinutesInput" type="text" placeholder="{{description}} notes...">
       </div>
-      <div class="row">
+      <div class="row mb-3">
+        <div class="col-2">
+            <button (click)="colorSelected('color1')" id="colorPickerInput" class="w-100 btn" [style.background]="userPreferences.color1"></button>
+          <!-- TODO: Additional Preferences (examples: Event Colors, calendar theme, include weekends?, defaults for new events?) -->
+        </div>
+        <div class="col-2">
+            <button (click)="colorSelected('color2')" id="colorPickerInput" class="w-100 btn" [style.background]="userPreferences.color2"></button>
+        </div>
+        <div class="col-2">
+            <button (click)="colorSelected('color3')" id="colorPickerInput" class="w-100 btn" [style.background]="userPreferences.color3"></button>
+        </div>
+        <div class="col-2">
+            <button (click)="colorSelected('color4')" id="colorPickerInput" class="w-100 btn" [style.background]="userPreferences.color4"></button>
+        </div>
+        <div class="col-2">
+            <button (click)="colorSelected('color5')" id="colorPickerInput" class="w-100 btn" [style.background]="userPreferences.color5"></button>
+        </div>
+        <div class="col-2">
+            <button (click)="colorSelected('color6')" id="colorPickerInput" class="w-100 btn" [style.background]="userPreferences.color6"></button>
+        </div>
       </div>
       <div class="row flex-row-reverse">
           <button (click)="saveModal()" class="ml-3 btn btn-primary">Save</button>

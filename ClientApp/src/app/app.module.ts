@@ -11,7 +11,6 @@ import { PreferencesButtonComponent } from './components/preferences-button/pref
 import { PreferencesMainComponent } from './components/preferences-main/preferences-main.component';
 import { LocalStorageService } from './services/local-storage.service';
 import { CreateAccountComponent } from './components/create-account/create-account.component';
-import { PreferencesFormComponent } from './components/preferences-form/preferences-form.component';
 import { ToastrModule } from 'ngx-toastr';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { HttpClientModule } from '@angular/common/http';
@@ -33,6 +32,7 @@ import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/compat/aut
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarOverviewComponent } from './components/calendar-overview/calendar-overview.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -46,7 +46,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     PreferencesButtonComponent,
     PreferencesMainComponent,
     CreateAccountComponent,
-    PreferencesFormComponent,
     FocusMainComponent,
     FocusButtonComponent,
     HeaderMainComponent,
@@ -64,6 +63,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     FullCalendarModule,
+    ColorPickerModule,
     HttpClientModule
   ],
   providers: [LocalStorageService, Storage, FirebaseService, AngularFireAuth],

@@ -6,15 +6,31 @@
                     <div class="col-12 mx-auto">
                         <div id="preferencesForm">
                             <div class="container">
-                              <div class="row">
+                              <div class="row mb-3">
                                 <div class="col">
                                   <label for="trackingDescription">What would you like to track?</label>
                                   <input [(ngModel)]="model.trackingDescription" class="form-control" type="text" id="trackingDescription" name="trackingDescription" placeholder="Description...">
                                 </div>
                               </div>
                               <div class="row">
-                                <div class="col">
+                                <div class="col-2">
+                                    <input id="colorPickerInput" [(colorPicker)]="model.color1" [style.background]="model.color1"/>
                                   <!-- TODO: Additional Preferences (examples: Event Colors, calendar theme, include weekends?, defaults for new events?) -->
+                                </div>
+                                <div class="col-2">
+                                    <input id="colorPickerInput" [(colorPicker)]="model.color2" [style.background]="model.color2"/>
+                                </div>
+                                <div class="col-2">
+                                    <input id="colorPickerInput" [(colorPicker)]="model.color3" [style.background]="model.color3"/>
+                                </div>
+                                <div class="col-2">
+                                    <input id="colorPickerInput" [(colorPicker)]="model.color4" [style.background]="model.color4"/>
+                                </div>
+                                <div class="col-2">
+                                    <input id="colorPickerInput" [(colorPicker)]="model.color5" [style.background]="model.color5"/>
+                                </div>
+                                <div class="col-2">
+                                    <input id="colorPickerInput" [(colorPicker)]="model.color6" [style.background]="model.color6"/>
                                 </div>
                               </div>
                             </div>
@@ -31,11 +47,12 @@
                                       <input [(ngModel)]="model.emailAddress" id="emailAddress" name="emailAddress" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                     </div>
                               </div> -->
-                          
-                              <div>
-                                <pre>{{model |json }}</pre>
-                              </div>
-                          </div>                    </div>
+<!--                           
+                            <div>
+                            <pre>{{model |json }}</pre>
+                            </div> -->
+                        </div>                    
+                    </div>
                 </div>
             </div>
         </div>

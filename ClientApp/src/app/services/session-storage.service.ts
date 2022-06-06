@@ -12,11 +12,18 @@ export class SessionStorageService {
   public readonly isUserAuthenticated$ = new Subject<boolean>();
 
   // eslint-disable-next-line no-useless-constructor
-  constructor () { }
+  constructor () {
+    this.clear();
+  }
 
-  setAuthenticatedUser = (user: string): void => {
-    this.isUserAuthenticated$.next(true);
-    sessionStorage.setItem(AppSessionStorageKey.userName, user);
+  setAuthenticatedUser = (user: string = ''): void => {
+    if (user.length === 0) {
+      this.isUserAuthenticated$.next(false);
+      sessionStorage.removeItem(AppSessionStorageKey.userName);
+    } else {
+      this.isUserAuthenticated$.next(true);
+      sessionStorage.setItem(AppSessionStorageKey.userName, user);
+    }
   };
 
   getAuthenticatedUser = (): string => {

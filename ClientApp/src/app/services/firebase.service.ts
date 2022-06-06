@@ -9,9 +9,10 @@ import { ICreateUserResultModel } from '../models/i-createUser-result.model';
 import { ILoginUserResultModel } from '../models/i-loginUser-result.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
-import { EventInput } from '@fullcalendar/angular';
+import { v4 as uuidv4 } from 'uuid';
 import { first, map } from 'rxjs';
 import { PreferencesFormModel } from '../models/preferencesForm.model';
+import { CalendarEvent } from '../models/i-calendar-event.model';
 
 @Injectable({
   providedIn: 'root'
@@ -84,9 +85,16 @@ export class FirebaseService {
     }
   };
 
-  saveCalendarEvent = (event:EventInput) => {
-    event.id = this.authUser?.uid;
-    this.store.collection('events').add(event);
+  saveCalendarEvent = async (event:CalendarEvent) => {
+    this.getEventsCollection(event.id).get().subscribe(data => {
+      if (data.docs.length > 1 || data.docs.length === 0) {
+        event.id = uuidv4();
+        event.userId = this.authUser?.uid;
+        this.store.collection('events').add(event);
+      } else {
+        this.store.collection('events').doc(data.docs[0].id).update(event);
+      }
+    });
   };
 
   getUserCalendarEvents = () => {
@@ -99,7 +107,8 @@ export class FirebaseService {
     );
   };
 
-  saveUserPreferences = (preferences: PreferencesFormModel) => {
+  saveUserPreferences = async (preferences: PreferencesFormModel) => {
+    preferences.userId = preferences.userId ?? this.authUser?.uid ?? '';
     this.getPreferencesCollection()
       .snapshotChanges().subscribe(doc => {
         if (doc.length > 0) {
@@ -132,7 +141,8 @@ export class FirebaseService {
     return this.store.collection('preferences', ref => ref.where('userId', '==', this.authUser?.uid));
   };
 
-  private getEventsCollection = (): AngularFirestoreCollection<EventInput> => {
-    return this.store.collection('events', ref => ref.where('id', '==', this.authUser?.uid));
+  private getEventsCollection = (eventId: string = ''): AngularFirestoreCollection<CalendarEvent> => {
+    if (eventId.length > 0) { return this.store.collection('events', ref => ref.where('id', '==', eventId)); }
+    return this.store.collection('events', ref => ref.where('userId', '==', this.authUser?.uid));
   };
 }
