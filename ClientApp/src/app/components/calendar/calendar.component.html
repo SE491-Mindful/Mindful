@@ -1,3 +1,6 @@
+<!-- <div id="debugCalendarButton"class="container">
+  <button type="button" class="btn btn-primary" (click)="requestCalendarData()">Get Data</button>
+</div> -->
 <div class="container formMain">
   <div class="row">
     <div class="col-12">
@@ -6,3 +9,29 @@
   </div>
 </div>
 
+<!-- TODO: HTMLDialogElement for some reason won't show/hide with typescript and Ng13... hacked with ngIf for now -->
+<dialog *ngIf="!!isModalOpen" id="addEventDialog"  #addEventDialog>
+  <div class="container h-100 float-left">
+      <div class="row">
+          <h1>Mindful Log</h1>
+      </div>
+      <div class="row mb-3">
+          <i>{{description}}</i>
+      </div>
+      <div class="row mb-2">
+          <label for="eventDateInput">Date</label>
+          <input [(ngModel)]="date" class="form-control" id="eventDateInput" type="date" placeholder="YYYY/MM/DD">
+      </div>
+      <div class="row mb-3">
+          <label for="eventMinutesInput">Duration</label>
+          <input [(ngModel)]="duration" class="form-control" id="eventMinutesInput" type="number" placeholder="minutes">
+      </div>
+      <div class="row">
+      </div>
+      <div class="row flex-row-reverse">
+          <button (click)="saveModal()" class="ml-3 btn btn-primary">Save</button>
+          <button (click)="closeModal()" class="btn btn-secondary">Close</button>
+          <!-- <button (click)="cancel(addEventDialog)" class="btn btn-secondary">Cancel</button> -->
+      </div>
+  </div>
+</dialog>

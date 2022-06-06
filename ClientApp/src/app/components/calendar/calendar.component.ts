@@ -1,7 +1,10 @@
 import { formatDate } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
+import { CalendarOptions, EventInput, FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import { Timestamp } from 'firebase/firestore';
+import { Subject, takeUntil } from 'rxjs';
+import { FirebaseService } from 'src/app/services/firebase.service';
 // import interactionPlugin from '@fullcalendar/interaction';
 
 @Component({
@@ -9,36 +12,69 @@ import dayGridPlugin from '@fullcalendar/daygrid';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnDestroy {
   // references the #calendar in the template
   @ViewChild('fullcalendar') calendarComponent: FullCalendarComponent | undefined;
 
+  // Modal- START
+  description: string = 'How Long were you Mindful Today?';
+  duration: number | undefined = undefined;
+  date:string | undefined = formatDate(Date.now(), 'YYYY-MM-dd', 'en_US');
+  isModalOpen = false;
+  // Modal - END
+
+  userEvents: any[] = [];
+  $destroy = new Subject<boolean>();
   // eslint-disable-next-line no-useless-constructor
-  constructor () {
+  constructor (private fireService: FirebaseService) {
   }
 
-  // function used in FullCalendarComponent CalendarOptions to setup the calendar's click event.
-  addEventClick = (): void => {
-    const currentDate = formatDate(Date.now(), 'YYYY-MM-dd', 'en_US');
-    // eslint-disable-next-line no-undef
-    const dateStr = prompt('Enter a date in YYYY-MM-DD format', currentDate);
-    const date = new Date(dateStr + 'T00:00:00'); // will be in local time
-    // eslint-disable-next-line no-undef
-    const duration = prompt('Enter the number of minutes you were Mindful today');
+  closeModal = () => { this.isModalOpen = false; };
 
-    if (!isNaN(date.valueOf())) { // valid?
-      this.calendarComponent?.getApi().addEvent({
-        title: 'Mindful for ' + duration + ' minutes.',
-        start: date,
-        allDay: true
-      });
+  showModal = () => { this.isModalOpen = true; };
 
-      console.log(this.calendarComponent?.getApi().getEvents());
-    } else {
-      // eslint-disable-next-line no-undef
-      alert('Invalid date.');
-    }
+  saveModal = () => {
+    const event = {
+      title: 'Mindful for ' + this.duration + ' minutes.',
+      start: new Date(this.date + 'T00:00:00'),
+      allDay: true
+    } as EventInput;
+
+    this.calendarComponent?.getApi().addEvent(event);
+    console.log(this.calendarComponent?.getApi().getEvents());
+    this.fireService.saveCalendarEvent(event);
+    this.closeModal();
   };
+
+  ngOnDestroy (): void {
+    this.userEvents = [];
+    this.$destroy.next(true);
+    this.$destroy.complete();
+  }
+
+  ngOnInit () {
+    // This is a bit of a hack to convert Firebase Timestamp obj to DateTime objects in Javascript.. but it works for now.
+    this.fireService.getUserCalendarEvents()
+      .subscribe((data: any[]) => {
+        data.forEach(d => { d.start = (<Timestamp>d.start).toDate(); });
+        this.userEvents = data;
+        // this.userEvents.forEach(event => { event.start = '2022-06-10'; });
+        this.requestCalendarData();
+      },
+      takeUntil(this.$destroy));
+  }
+
+  requestCalendarData = () => {
+    // console.log('Calendar Events: ' + JSON.stringify(this.calendarComponent?.getApi().getEvents()));
+    // console.log('Firebase Events: ' + JSON.stringify(this.userEvents));
+    this.calendarComponent?.getApi()?.batchRendering(() => {
+      this.calendarComponent?.getApi()?.removeAllEvents();
+      this.calendarComponent?.getApi()?.addEventSource(this.userEvents);
+    });
+  };
+
+  // function used in FullCalendarComponent CalendarOptions to setup the calendar's click event.
+  addEventClick = (): void => { this.isModalOpen = true; };
 
   dateClick = (info: { dateStr: string; resource: { id: string; }; }): void => {
     // eslint-disable-next-line no-undef
