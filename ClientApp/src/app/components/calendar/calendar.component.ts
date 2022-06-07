@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { formatDate } from '@angular/common';
 import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { CalendarOptions, EventApi, FullCalendarComponent } from '@fullcalendar/angular';
@@ -19,11 +20,17 @@ export class CalendarComponent implements OnInit, OnDestroy {
   // references the #calendar in the template
   @ViewChild('fullcalendar') calendarComponent: FullCalendarComponent | undefined;
 
+  // OverviewModel
+  counter: number = 0;
+  flag: boolean = true;
+  Overview_description: string | undefined;
+  isOverviewModelOpen = false;
   // Modal- START
   description: string = 'How Long were you Mindful Today?';
   eventDescription: string | undefined = undefined;
   eventColor: string | undefined = undefined;
   date:string | undefined = formatDate(Date.now(), 'YYYY-MM-dd', 'en_US');
+  timeMinutes: number | undefined;
   isModalOpen = false;
   currentEventId: string = '';
   // Modal - END
@@ -61,6 +68,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   // MODAL functions - START
+  closeOverviewModal = () => { this.isOverviewModelOpen = false; };
+
+  showOverviewModal = () => { this.isOverviewModelOpen = true; };
+
   closeModal = () => { this.isModalOpen = false; this.currentEventId = ''; };
 
   showModal = () => { this.isModalOpen = true; };
@@ -69,6 +80,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const event = {
       id: this.currentEventId,
       title: this.eventDescription,
+      timeMinutes: this.timeMinutes,
       start: new Date(this.date + 'T00:00:00'),
       color: this.eventColor,
       allDay: true
@@ -78,7 +90,23 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.toastrService.error('Description is Required.');
     } else if (event.color == null || event.color === undefined) {
       this.toastrService.error('Color is Required.');
+    } else if (event.timeMinutes == null || event.timeMinutes === undefined) {
+      this.toastrService.error('Number of Minutes is Required.');
     } else {
+      let totalMinutes = 0;
+      const currentDate = new Date(formatDate(Date.now(), 'YYYY-MM-dd', 'en_US') + 'T00:00:00');
+      this.userEvents.push(event);
+      this.userEvents.forEach((e:CalendarEvent) => {
+        if ((<Date>e?.start)?.getDate() === currentDate.getDate()) {
+          totalMinutes += e?.timeMinutes ?? 0;
+        }
+      });
+      this.counter += 1;
+      if (totalMinutes > this.userPreferences.dailyMinuteGoal && this.flag) {
+        this.Overview_description = this.userPreferences.trackingDescription + ': ' + totalMinutes + ' minutes.';
+        this.showOverviewModal();
+        this.flag = false;
+      }
       this.calendarComponent?.getApi().addEvent(event);
       await this.fireService.saveCalendarEvent(event).then(() => {
         this.toastrService.success('Event Created.');
