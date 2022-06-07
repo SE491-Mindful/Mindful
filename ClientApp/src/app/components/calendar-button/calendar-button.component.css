@@ -1,0 +1,13 @@
+#calendarIcon {
+    color: #7532FA;
+    transform: scale(2.5);
+    transition: transform 1.5s ease 0s;
+}
+
+#calendarIcon:hover {
+    transform: rotate(50deg) scale(3.5);
+}
+
+#calendarIcon:hover::after {
+    transform: rotate(50deg);
+}

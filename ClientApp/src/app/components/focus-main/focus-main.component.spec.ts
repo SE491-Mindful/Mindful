@@ -26,9 +26,9 @@ describe('FocusMainComponent', () => {
     });
   });
 
-  describe('startFocus', () => {
-    // TODO: implement me.
-  });
+  // describe('startFocus', () => {
+  //   // TODO: implement me.
+  // });
 
   describe('calculateFocusValues', () => {
     it('should calculate for 15 minutes', async () => {

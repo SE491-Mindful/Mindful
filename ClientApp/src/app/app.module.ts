@@ -33,6 +33,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarOverviewComponent } from './components/calendar-overview/calendar-overview.component';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { CalendarButtonComponent } from './components/calendar-button/calendar-button.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -51,7 +52,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     HeaderMainComponent,
     LogoutButtonComponent,
     FooterMainComponent,
-    CalendarOverviewComponent
+    CalendarOverviewComponent,
+    CalendarButtonComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

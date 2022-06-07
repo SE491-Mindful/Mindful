@@ -17,6 +17,20 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.btn-app-primary, .fc-button {
+  background-color: #7532FA !important;
+  color: white !important;
+  border: none !important;
+}
+
+.btn:hover {
+  background-color: #7532fa74;
+  opacity: 0.9;
+  border: inherit;
+}
+
+
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

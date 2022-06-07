@@ -1,0 +1,8 @@
+#createAccountLink{
+    color: #7532FA !important;
+    font-size: small;
+}
+
+#createAccountLink:hover {
+    color: #7532fa40 !important;
+}
