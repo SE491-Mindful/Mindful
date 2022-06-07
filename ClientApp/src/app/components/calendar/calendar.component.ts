@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 /* eslint-disable no-unused-vars */
 import { formatDate } from '@angular/common';
 import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
@@ -7,7 +8,9 @@ import { Timestamp } from 'firebase/firestore';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { CalendarEvent } from 'src/app/models/i-calendar-event.model';
-import { PreferencesFormModel } from 'src/app/models/preferencesForm.model';
+import { ICreateEventModel } from 'src/app/models/i-createEvent.model';
+import { IDailyOverviewModel } from 'src/app/models/i-dailyOverview.model';
+import { IPreferencesFormModel } from 'src/app/models/i-preferencesForm.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 // import interactionPlugin from '@fullcalendar/interaction';
 
@@ -16,44 +19,32 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent implements OnInit, OnDestroy {
+export class CalendarComponent implements OnDestroy {
   // references the #calendar in the template
   @ViewChild('fullcalendar') calendarComponent: FullCalendarComponent | undefined;
 
-  // OverviewModel
-  counter: number = 0;
-  flag: boolean = true;
-  Overview_description: string | undefined;
+  dailyOverviewModel = {} as IDailyOverviewModel;
   isOverviewModelOpen = false;
-  // Modal- START
-  description: string = 'How Long were you Mindful Today?';
-  eventDescription: string | undefined = undefined;
-  eventColor: string | undefined = undefined;
-  date:string | undefined = formatDate(Date.now(), 'YYYY-MM-dd', 'en_US');
-  timeMinutes: number | undefined;
-  isModalOpen = false;
-  currentEventId: string = '';
-  // Modal - END
 
-  userPreferences: PreferencesFormModel = {} as PreferencesFormModel;
+  currentEventModel = {} as ICreateEventModel;
+  isModalOpen = false;
+
+  userPreferences: IPreferencesFormModel = {} as IPreferencesFormModel;
   userEvents: any[] = [];
   destroyed$ = new Subject<boolean>();
-  // eslint-disable-next-line no-useless-constructor
+
   constructor (
     private toastrService: ToastrService,
     private fireService: FirebaseService) {
-  }
-
-  ngOnDestroy (): void {
-    this.userEvents = [];
-    this.destroyed$.next(true);
-    this.destroyed$.complete();
-  }
-
-  ngOnInit () {
     this.fireService.getUserPreferences().subscribe(data => {
-      this.userPreferences = data[0] ?? {} as PreferencesFormModel;
-      this.description = this.userPreferences.trackingDescription;
+      this.userPreferences = data[0] ?? {} as IPreferencesFormModel;
+      this.currentEventModel.title = this.userPreferences.trackingDescription;
+      this.currentEventModel.color1 = this.userPreferences.color1;
+      this.currentEventModel.color2 = this.userPreferences.color2;
+      this.currentEventModel.color3 = this.userPreferences.color3;
+      this.currentEventModel.color4 = this.userPreferences.color4;
+      this.currentEventModel.color5 = this.userPreferences.color5;
+      this.currentEventModel.color6 = this.userPreferences.color6;
     }, takeUntil(this.destroyed$));
 
     // This is a bit of a hack to convert Firebase Timestamp obj to DateTime objects in Javascript.. but it works for now.
@@ -67,48 +58,54 @@ export class CalendarComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$));
   }
 
+  ngOnDestroy (): void {
+    this.userEvents = [];
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
+
   // MODAL functions - START
   closeOverviewModal = () => { this.isOverviewModelOpen = false; };
 
   showOverviewModal = () => { this.isOverviewModelOpen = true; };
 
-  closeModal = () => { this.isModalOpen = false; this.currentEventId = ''; };
+  closeModal = () => { this.isModalOpen = false; this.currentEventModel.id = ''; };
 
   showModal = () => { this.isModalOpen = true; };
 
   saveModal = async () => {
-    const event = {
-      id: this.currentEventId,
-      title: this.eventDescription,
-      timeMinutes: this.timeMinutes,
-      start: new Date(this.date + 'T00:00:00'),
-      color: this.eventColor,
+    const tempEvent = {
+      id: this.currentEventModel.id,
+      title: this.currentEventModel.eventDescription,
+      timeMinutes: this.currentEventModel.timeMinutes,
+      start: new Date(this.currentEventModel.date + 'T00:00:00'),
+      color: this.currentEventModel.selectedColor,
       allDay: true
     } as CalendarEvent;
 
-    if (this.eventDescription == null || this.eventDescription === undefined) {
+    // Error cases before saving modal.
+    if (this.currentEventModel.eventDescription == null || this.currentEventModel.eventDescription === undefined) {
       this.toastrService.error('Description is Required.');
-    } else if (event.color == null || event.color === undefined) {
+    } else if (tempEvent.color == null || tempEvent.color === undefined) {
       this.toastrService.error('Color is Required.');
-    } else if (event.timeMinutes == null || event.timeMinutes === undefined) {
+    } else if (tempEvent.timeMinutes == null || tempEvent.timeMinutes === undefined) {
       this.toastrService.error('Number of Minutes is Required.');
     } else {
       let totalMinutes = 0;
       const currentDate = new Date(formatDate(Date.now(), 'YYYY-MM-dd', 'en_US') + 'T00:00:00');
-      this.userEvents.push(event);
+      this.userEvents.push(tempEvent);
       this.userEvents.forEach((e:CalendarEvent) => {
         if ((<Date>e?.start)?.getDate() === currentDate.getDate()) {
           totalMinutes += e?.timeMinutes ?? 0;
         }
       });
-      this.counter += 1;
-      if (totalMinutes > this.userPreferences.dailyMinuteGoal && this.flag) {
-        this.Overview_description = this.userPreferences.trackingDescription + ': ' + totalMinutes + ' minutes.';
+      if (totalMinutes > this.userPreferences.dailyMinuteGoal && !this.dailyOverviewModel.hasSeen) {
+        this.dailyOverviewModel.description = this.userPreferences.trackingDescription + ': ' + totalMinutes + ' minutes.';
         this.showOverviewModal();
-        this.flag = false;
+        this.dailyOverviewModel.hasSeen = true;
       }
-      this.calendarComponent?.getApi().addEvent(event);
-      await this.fireService.saveCalendarEvent(event).then(() => {
+      this.calendarComponent?.getApi().addEvent(tempEvent);
+      await this.fireService.saveCalendarEvent(tempEvent).then(() => {
         this.toastrService.success('Event Created.');
       }).catch((err) => {
         this.toastrService.error(err);
@@ -118,7 +115,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   };
 
   deleteModal = async () => {
-    await this.fireService.deleteCalendarEvent(this.currentEventId).then(() => {
+    await this.fireService.deleteCalendarEvent(this.currentEventModel.id).then(() => {
       this.toastrService.success('Event Deleted.');
       this.closeModal();
     }).catch((err) => {
@@ -128,26 +125,25 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   // MODAL functions - END
 
-  dateClick = (info: any) => {
-    // console.log(info.date);
-    this.date = formatDate(info.date, 'YYYY-MM-dd', 'en_US');
-    // console.log(this.date);
-  };
-
   // START - CalendarOptions obj configuration and event functions.
   // function used in FullCalendarComponent CalendarOptions to setup the calendar's click event.
+  dateClick = (info: any) => {
+    this.currentEventModel.date = formatDate(info.date, 'YYYY-MM-dd', 'en_US');
+  };
+
   addEventClick = (): void => {
-    this.eventDescription = undefined;
+    this.currentEventModel.eventDescription = undefined;
     this.isModalOpen = true;
+    this.currentEventModel.title = this.userPreferences.trackingDescription;
   };
 
   eventClick = (info: { event: EventApi; jsEvent: { preventDefault: () => void; }; }): void => {
     const eventObj = info.event;
     console.log(eventObj);
 
-    this.date = formatDate(eventObj.start ?? Date.now(), 'YYYY-MM-dd', 'en_US');
-    this.eventDescription = eventObj.title;
-    this.currentEventId = eventObj.id;
+    this.currentEventModel.date = formatDate(eventObj.start ?? Date.now(), 'YYYY-MM-dd', 'en_US');
+    this.currentEventModel.eventDescription = eventObj.title;
+    this.currentEventModel.id = eventObj.id;
     this.showModal();
   };
 
@@ -157,6 +153,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const newEvent = {
       id: eventObj.id,
       title: eventObj.title,
+      timeMinutes: eventObj.extendedProps['timeMinutes'],
+      userId: eventObj.extendedProps['userId'],
       start: eventObj.start,
       color: eventObj.backgroundColor,
       allDay: eventObj.allDay
@@ -239,24 +237,24 @@ export class CalendarComponent implements OnInit, OnDestroy {
   // START - Helper functions for calendar component.
   colorSelected = (eventColor: string): void => {
     switch (eventColor) {
-      case 'color1': this.eventColor = this.userPreferences.color1;
+      case 'color1': this.currentEventModel.selectedColor = this.userPreferences.color1;
         break;
-      case 'color2': this.eventColor = this.userPreferences.color2;
-        break;
-
-      case 'color3': this.eventColor = this.userPreferences.color3;
+      case 'color2': this.currentEventModel.selectedColor = this.userPreferences.color2;
         break;
 
-      case 'color4': this.eventColor = this.userPreferences.color4;
+      case 'color3': this.currentEventModel.selectedColor = this.userPreferences.color3;
         break;
 
-      case 'color5': this.eventColor = this.userPreferences.color5;
+      case 'color4': this.currentEventModel.selectedColor = this.userPreferences.color4;
         break;
 
-      case 'color6': this.eventColor = this.userPreferences.color6;
+      case 'color5': this.currentEventModel.selectedColor = this.userPreferences.color5;
         break;
 
-      default: this.eventColor = this.userPreferences.color1;
+      case 'color6': this.currentEventModel.selectedColor = this.userPreferences.color6;
+        break;
+
+      default: this.currentEventModel.selectedColor = this.userPreferences.color1;
     }
   };
 

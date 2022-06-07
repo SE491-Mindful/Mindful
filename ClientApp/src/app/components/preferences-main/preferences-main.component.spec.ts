@@ -32,9 +32,6 @@ describe('PreferencesMainComponent', () => {
       component.save();
 
       expect(firebaseService.saveUserPreferences).toHaveBeenCalledTimes(1);
-      expect(toastrService.success).toHaveBeenCalledTimes(1);
-      // expect(routerServce.navigate).toHaveBeenCalledTimes(1);
-      // expect(routerServce.navigate).toHaveBeenCalledWith(AppRoutes.Calendar);
     });
   });
 });

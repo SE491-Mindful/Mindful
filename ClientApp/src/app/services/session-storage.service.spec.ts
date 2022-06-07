@@ -1,5 +1,5 @@
 import { AppSessionStorageKey } from '../constants/app.constants';
-import { PreferencesFormModel } from '../models/preferencesForm.model';
+import { IPreferencesFormModel } from '../models/i-preferencesForm.model';
 
 import { SessionStorageService } from './session-storage.service';
 
@@ -32,7 +32,7 @@ describe('SessionStorageService', () => {
   });
   describe('setPreferences', () => {
     it('should set preferences on session storage', async () => {
-      const model = {} as PreferencesFormModel;
+      const model = {} as IPreferencesFormModel;
       service.setPreferences(model);
       expect(window.sessionStorage.setItem).toHaveBeenCalledTimes(1);
       expect(window.sessionStorage.setItem).toHaveBeenCalledWith(AppSessionStorageKey.preferences, JSON.stringify(model));

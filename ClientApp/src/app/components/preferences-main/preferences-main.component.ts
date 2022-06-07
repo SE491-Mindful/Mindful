@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { AppRoutes } from 'src/app/constants/app.constants';
-import { PreferencesFormModel } from 'src/app/models/preferencesForm.model';
+import { IPreferencesFormModel } from 'src/app/models/i-preferencesForm.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { RouterService } from 'src/app/services/router.service';
 
@@ -13,16 +13,16 @@ import { RouterService } from 'src/app/services/router.service';
 })
 export class PreferencesMainComponent implements OnDestroy {
   // model used by the preferences form injected as an input in the template.
-  private readonly defaultModel = {
-    color1: '#ff0000',
-    color2: '#d0972f',
-    color3: '#bfd235',
-    color4: '#d4ff55',
-    color5: '#99f763',
-    color6: '#00ff94'
-  } as PreferencesFormModel;
+  // private readonly defaultModel = {
+  //   color1: '#ff0000',
+  //   color2: '#d0972f',
+  //   color3: '#bfd235',
+  //   color4: '#d4ff55',
+  //   color5: '#99f763',
+  //   color6: '#00ff94'
+  // } as IPreferencesFormModel;
 
-  model = {} as PreferencesFormModel;
+  model = {} as IPreferencesFormModel;
 
   destroyed$ = new Subject<boolean>();
 
@@ -31,7 +31,7 @@ export class PreferencesMainComponent implements OnDestroy {
     private toastrService: ToastrService,
     private firebaseService: FirebaseService) {
     this.firebaseService.getUserPreferences().subscribe(data => {
-      this.model = data[0] ?? this.defaultModel;
+      this.model = data[0] ?? {};
     }, takeUntil(this.destroyed$));
   }
 
@@ -45,9 +45,6 @@ export class PreferencesMainComponent implements OnDestroy {
   };
 
   save = async () => {
-    this.toastrService.success('Preferences Saved.');
-    await this.firebaseService.saveUserPreferences(this.model).finally(() => {
-      this.routerService.navigate(AppRoutes.Calendar);
-    });
+    await this.firebaseService.saveUserPreferences(this.model);
   };
 }

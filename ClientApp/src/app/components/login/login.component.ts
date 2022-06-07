@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AppRoutes } from 'src/app/constants/app.constants';
-import { LoginModel } from 'src/app/models/loginInput.model';
+import { ILoginModel } from 'src/app/models/i-login.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { RouterService } from 'src/app/services/router.service';
 @Component({
@@ -17,7 +17,7 @@ export class LoginComponent {
     private firestore: FirebaseService) {
   }
 
-  model = {} as LoginModel;
+  model = {} as ILoginModel;
 
   login = async (): Promise<void> => {
     const result = await this.firestore.loginEmailFirebase(this.model.username, this.model.password);

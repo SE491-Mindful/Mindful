@@ -16,19 +16,19 @@
           <h1>Mindful Log</h1>
       </div>
       <div class="row mb-3">
-          <i>{{description}}</i>
+          <i>{{this.currentEventModel.title}}</i>
       </div>
       <div class="row mb-2">
           <label for="eventDateInput">Date</label>
-          <input [(ngModel)]="date" class="form-control" id="eventDateInput" type="date" placeholder="YYYY/MM/DD">
+          <input [(ngModel)]="this.currentEventModel.date" class="form-control" id="eventDateInput" type="date" placeholder="YYYY/MM/DD">
       </div>
       <div class="row mb-2">
         <label for="eventDateInput">Number of Minutes</label>
-        <input [(ngModel)]="timeMinutes" class="form-control" id="eventDateInput" type="number" placeholder="Minutes...">
+        <input [(ngModel)]="this.currentEventModel.timeMinutes" class="form-control" id="eventDateInput" type="number" placeholder="Minutes...">
     </div>
       <div class="row mb-3">
           <label for="eventMinutesInput">Event Description</label>
-          <input [(ngModel)]="eventDescription" class="form-control" id="eventMinutesInput" type="text" placeholder="{{description}} notes...">
+          <input [(ngModel)]="this.currentEventModel.eventDescription" class="form-control" id="eventMinutesInput" type="text" placeholder="{{this.currentEventModel.title}} notes...">
       </div>
       <div class="row mb-3">
         <div class="col-2">
@@ -71,7 +71,7 @@
           <h1>Mindful Logger</h1>
       </div>
       <div class="row mb-3">
-          <p>{{Overview_description}}</p>
+          <p>{{dailyOverviewModel.description}}</p>
       </div>
       <div>
         <button (click)="closeOverviewModal()" class="btn btn-secondary">Close</button>

@@ -1,5 +1,5 @@
 
-export interface PreferencesFormModel {
+export interface IPreferencesFormModel {
     firebaseId: string;
     userId: string;
     dailyMinuteGoal: number;

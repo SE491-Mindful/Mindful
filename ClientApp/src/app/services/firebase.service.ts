@@ -11,8 +11,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 import { v4 as uuidv4 } from 'uuid';
 import { first, map } from 'rxjs';
-import { PreferencesFormModel } from '../models/preferencesForm.model';
+import { IPreferencesFormModel } from '../models/i-preferencesForm.model';
 import { CalendarEvent } from '../models/i-calendar-event.model';
+import { AppRoutes } from '../constants/app.constants';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +27,7 @@ export class FirebaseService {
     private store: AngularFirestore,
     private angularFireAuth: AngularFireAuth,
     private sessionStorage: SessionStorageService,
+    private toastrService: ToastrService,
     private routerService: RouterService) {
     this.auth = getAuth();
 
@@ -117,23 +120,23 @@ export class FirebaseService {
     );
   };
 
-  saveUserPreferences = async (preferences: PreferencesFormModel) => {
-    preferences.userId = preferences.userId ?? this.authUser?.uid ?? '';
-    this.getPreferencesCollection()
-      .snapshotChanges().subscribe(doc => {
-        if (doc.length > 0) {
-          const id = doc[0].payload.doc.id;
-          this.store.collection('preferences').doc(id).update(preferences);
-        } else {
-          this.store.collection('preferences').add(preferences);
-        }
+  saveUserPreferences = async (preferences: IPreferencesFormModel) => {
+    if (preferences.userId === undefined || preferences.userId === '' || preferences.userId === null) {
+      this.getPreferencesCollection().get().subscribe(data => {
+        preferences.userId = this.authUser?.uid ?? 'BAD USER ID DATA';
+        this.store.collection('preferences').add(preferences).then(() => {
+          this.toastrService.success('Preferences Updated.');
+          this.routerService.navigate(AppRoutes.Calendar);
+        });
       });
-    // console.log(this.getPreferencesCollection().doc(this.authUser?.uid));
-    // if (this.getPreferencesCollection().doc(). > 0) {
-    //   this.store.collection('preferences').
-    // }
-    // preferences.userId = this.authUser?.uid ?? '';
-    // this.store.collection('')
+    } else {
+      this.getPreferencesCollection().get().subscribe(data => {
+        this.store.collection('preferences').doc(data.docs[0].id).update(preferences).then(() => {
+          this.toastrService.success('Preferences Saved.');
+          this.routerService.navigate(AppRoutes.Calendar);
+        });
+      });
+    }
   };
 
   getUserPreferences = () => {
@@ -147,7 +150,7 @@ export class FirebaseService {
     );
   };
 
-  private getPreferencesCollection = (): AngularFirestoreCollection<PreferencesFormModel> => {
+  private getPreferencesCollection = (): AngularFirestoreCollection<IPreferencesFormModel> => {
     return this.store.collection('preferences', ref => ref.where('userId', '==', this.authUser?.uid));
   };
 

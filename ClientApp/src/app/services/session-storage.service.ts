@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AppSessionStorageKey } from '../constants/app.constants';
-import { PreferencesFormModel } from '../models/preferencesForm.model';
+import { IPreferencesFormModel } from '../models/i-preferencesForm.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,13 +30,13 @@ export class SessionStorageService {
     return sessionStorage.getItem(AppSessionStorageKey.userName) ?? '';
   };
 
-  setPreferences = (model: PreferencesFormModel) => {
+  setPreferences = (model: IPreferencesFormModel) => {
     sessionStorage.setItem(AppSessionStorageKey.preferences.toString(), JSON.stringify(model));
   };
 
-  getPreferences = (): PreferencesFormModel => {
+  getPreferences = (): IPreferencesFormModel => {
     const preferences = sessionStorage.getItem(AppSessionStorageKey.preferences.toString()) ?? '';
-    return (preferences.length > 0) ? JSON.parse(preferences) as PreferencesFormModel : {} as PreferencesFormModel;
+    return (preferences.length > 0) ? JSON.parse(preferences) as IPreferencesFormModel : {} as IPreferencesFormModel;
   };
 
   clear = (): void => {
