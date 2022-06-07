@@ -86,7 +86,7 @@ export class FirebaseService {
   };
 
   saveCalendarEvent = async (event:CalendarEvent) => {
-    if (event.id === undefined) {
+    if (event.id === undefined || event.id === '') {
       this.getEventsCollection().get().subscribe(data => {
         event.id = uuidv4();
         event.userId = this.authUser?.uid;
