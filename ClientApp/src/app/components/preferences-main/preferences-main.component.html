@@ -6,6 +6,12 @@
                     <div class="col-12 mx-auto">
                         <div id="preferencesForm">
                             <div class="container">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label for="dailyGoal">Daily Minute Goal</label>
+                                    <input [(ngModel)]="model.dailyMinuteGoal" class="form-control" type="number" id="dailyMinuteGoal" name="dailyMinuteGoal" placeholder="Minutes...">
+                                </div>
+                                </div>
                               <div class="row mb-3">
                                 <div class="col">
                                   <label for="trackingDescription">What would you like to track?</label>

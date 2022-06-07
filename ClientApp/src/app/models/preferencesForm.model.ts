@@ -2,6 +2,7 @@
 export interface PreferencesFormModel {
     firebaseId: string;
     userId: string;
+    dailyMinuteGoal: number;
     trackingDescription: string;
     enablePushNotifications: boolean;
     color1: string;

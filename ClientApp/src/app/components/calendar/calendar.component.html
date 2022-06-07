@@ -22,6 +22,10 @@
           <label for="eventDateInput">Date</label>
           <input [(ngModel)]="date" class="form-control" id="eventDateInput" type="date" placeholder="YYYY/MM/DD">
       </div>
+      <div class="row mb-2">
+        <label for="eventDateInput">Number of Minutes</label>
+        <input [(ngModel)]="timeMinutes" class="form-control" id="eventDateInput" type="number" placeholder="Minutes...">
+    </div>
       <div class="row mb-3">
           <label for="eventMinutesInput">Event Description</label>
           <input [(ngModel)]="eventDescription" class="form-control" id="eventMinutesInput" type="text" placeholder="{{description}} notes...">
@@ -58,5 +62,20 @@
         </div>
 
       </div>
+  </div>
+</dialog>
+
+<dialog *ngIf="!!isOverviewModelOpen" id="addEventDialog"  #addEventDialog>
+  <div class="container h-100 float-left">
+      <div class="row">
+          <h1>Mindful Logger</h1>
+      </div>
+      <div class="row mb-3">
+          <p>{{Overview_description}}</p>
+      </div>
+      <div>
+        <button (click)="closeOverviewModal()" class="btn btn-secondary">Close</button>
+      </div>
+     
   </div>
 </dialog>
