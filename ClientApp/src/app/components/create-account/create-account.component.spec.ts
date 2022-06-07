@@ -27,6 +27,8 @@ describe('CreateAccountComponent', () => {
         error: { errorMessage: '' }
       } as ICreateUserResultModel;
 
+      component.model.password = 'unitTestPassword';
+      component.confirmPassword = 'unitTestPassword';
       asSpy(fireService.createUserFirebase).and.returnValue(returnResult);
       asSpy(toaster.success).and.returnValue(null);
       await component.createAccount();
@@ -42,6 +44,8 @@ describe('CreateAccountComponent', () => {
         error: { errorMessage: 'unit test error' }
       } as ICreateUserResultModel;
 
+      component.model.password = 'unitTestPassword';
+      component.confirmPassword = 'unitTestPassword';
       asSpy(fireService.createUserFirebase).and.returnValue(returnResult);
       asSpy(toaster.error).and.returnValue(null);
       await component.createAccount();
@@ -49,6 +53,18 @@ describe('CreateAccountComponent', () => {
       expect(fireService.createUserFirebase).toHaveBeenCalledTimes(1);
       expect(toaster.error).toHaveBeenCalledWith(returnResult.error.errorMessage);
       expect(toaster.error).toHaveBeenCalledTimes(1);
+      expect(toaster.success).toHaveBeenCalledTimes(0);
+    });
+
+    it('should indicate password does not match', async () => {
+      component.model.password = 'unitTestPassword';
+      component.confirmPassword = 'differentPassword';
+
+      await component.createAccount();
+
+      expect(toaster.error).toHaveBeenCalledWith('Confirm Password must match.');
+      expect(toaster.error).toHaveBeenCalledTimes(1);
+      expect(fireService.createUserFirebase).toHaveBeenCalledTimes(0);
       expect(toaster.success).toHaveBeenCalledTimes(0);
     });
   });
