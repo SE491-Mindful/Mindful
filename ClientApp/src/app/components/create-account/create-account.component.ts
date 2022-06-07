@@ -10,6 +10,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 })
 export class CreateAccountComponent {
   model = {} as IUser;
+  confirmPassword = '';
 
   // eslint-disable-next-line no-useless-constructor
   constructor (
@@ -17,14 +18,16 @@ export class CreateAccountComponent {
     private fireStore: FirebaseService) { }
 
   async createAccount () {
-    // this.fireStore.createUser(this.model);
-    const result = await this.fireStore.createUserFirebase(this.model.username, this.model.password);
-
-    if (!result.success) {
-      this.toastrService.error(result.error.errorMessage);
+    if (this.confirmPassword !== this.model.password) {
+      this.toastrService.error('Confirm Password must match.');
     } else {
-      this.toastrService.success('Account Created Successfully');
+      const result = await this.fireStore.createUserFirebase(this.model.username, this.model.password);
+
+      if (!result.success) {
+        this.toastrService.error(result.error.errorMessage);
+      } else {
+        this.toastrService.success('Account Created Successfully');
+      }
     }
-    console.log('created clicked!');
   };
 }
