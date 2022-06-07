@@ -3,6 +3,7 @@ import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { CalendarOptions, EventApi, FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { Timestamp } from 'firebase/firestore';
+import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { CalendarEvent } from 'src/app/models/i-calendar-event.model';
 import { PreferencesFormModel } from 'src/app/models/preferencesForm.model';
@@ -24,13 +25,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
   eventColor: string | undefined = undefined;
   date:string | undefined = formatDate(Date.now(), 'YYYY-MM-dd', 'en_US');
   isModalOpen = false;
+  currentEventId: string = '';
   // Modal - END
 
   userPreferences: PreferencesFormModel = {} as PreferencesFormModel;
   userEvents: any[] = [];
   destroyed$ = new Subject<boolean>();
   // eslint-disable-next-line no-useless-constructor
-  constructor (private fireService: FirebaseService) {
+  constructor (
+    private toastrService: ToastrService,
+    private fireService: FirebaseService) {
   }
 
   ngOnDestroy (): void {
@@ -57,21 +61,41 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   // MODAL functions - START
-  closeModal = () => { this.isModalOpen = false; };
+  closeModal = () => { this.isModalOpen = false; this.currentEventId = ''; };
 
   showModal = () => { this.isModalOpen = true; };
 
   saveModal = async () => {
     const event = {
+      id: this.currentEventId,
       title: this.eventDescription,
       start: new Date(this.date + 'T00:00:00'),
       color: this.eventColor,
       allDay: true
     } as CalendarEvent;
 
-    this.calendarComponent?.getApi().addEvent(event);
-    await this.fireService.saveCalendarEvent(event);
-    this.closeModal();
+    if (this.eventDescription == null || this.eventDescription === undefined) {
+      this.toastrService.error('Description is Required.');
+    } else if (event.color == null || event.color === undefined) {
+      this.toastrService.error('Color is Required.');
+    } else {
+      this.calendarComponent?.getApi().addEvent(event);
+      await this.fireService.saveCalendarEvent(event).then(() => {
+        this.toastrService.success('Event Created.');
+      }).catch((err) => {
+        this.toastrService.error(err);
+      });
+      this.closeModal();
+    }
+  };
+
+  deleteModal = async () => {
+    await this.fireService.deleteCalendarEvent(this.currentEventId).then(() => {
+      this.toastrService.success('Event Deleted.');
+      this.closeModal();
+    }).catch((err) => {
+      this.toastrService.error(err);
+    });
   };
 
   // MODAL functions - END
@@ -95,6 +119,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     this.date = formatDate(eventObj.start ?? Date.now(), 'YYYY-MM-dd', 'en_US');
     this.eventDescription = eventObj.title;
+    this.currentEventId = eventObj.id;
     this.showModal();
   };
 
@@ -173,7 +198,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     customButtons: {
       addEventButton: {
-        text: 'Add Log',
+        text: 'Add Event',
         click: this.addEventClick
       }
     },

@@ -86,13 +86,23 @@ export class FirebaseService {
   };
 
   saveCalendarEvent = async (event:CalendarEvent) => {
-    this.getEventsCollection(event.id).get().subscribe(data => {
-      if (data.docs.length > 1 || data.docs.length === 0) {
+    if (event.id === undefined) {
+      this.getEventsCollection().get().subscribe(data => {
         event.id = uuidv4();
         event.userId = this.authUser?.uid;
         this.store.collection('events').add(event);
-      } else {
+      });
+    } else {
+      this.getEventsCollection(event.id).get().subscribe(data => {
         this.store.collection('events').doc(data.docs[0].id).update(event);
+      });
+    }
+  };
+
+  deleteCalendarEvent = async (id:string) => {
+    this.getEventsCollection(id).get().subscribe(data => {
+      if (data.docs.length === 1) {
+        this.store.collection('events').doc(data.docs[0].id).delete();
       }
     });
   };
