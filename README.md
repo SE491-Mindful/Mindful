@@ -23,9 +23,9 @@ Mindful is a mindfulness tool dedicated to meditation tracking, timing, managing
 
 | Target Release | -------------- |
 | -------------- | -------------- |
-| Designer | -------------- |
-| Developers | -------------- |
-| QA | -------------- |
+| Designer | Anthony Jarina, Alexander Sobieraj, Mitchell Ergen |
+| Developers | Anthony Jarina, Alexander Sobieraj, Mitchell Ergen |
+| QA | Anthony Jarina, Alexander Sobieraj, Mitchell Ergen |
 
 | User Story Title  | User Story Description | Priority |
 | ------------- | ------------- | ------------- |
