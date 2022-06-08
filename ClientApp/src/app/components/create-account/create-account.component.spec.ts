@@ -12,7 +12,7 @@ describe('CreateAccountComponent', () => {
 
   beforeEach(() => {
     toaster = jasmine.createSpyObj('ToastrService', ['success', 'error']);
-    fireService = jasmine.createSpyObj('FirebaseService', ['createUserFirebase']);
+    fireService = jasmine.createSpyObj('FirebaseService', ['createUserFirebase', 'saveUserPreferences']);
     component = new CreateAccountComponent(toaster, fireService);
   });
 
