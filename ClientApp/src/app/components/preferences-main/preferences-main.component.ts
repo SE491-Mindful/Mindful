@@ -12,16 +12,6 @@ import { RouterService } from 'src/app/services/router.service';
   styleUrls: ['./preferences-main.component.css']
 })
 export class PreferencesMainComponent implements OnDestroy {
-  // model used by the preferences form injected as an input in the template.
-  // private readonly defaultModel = {
-  //   color1: '#ff0000',
-  //   color2: '#d0972f',
-  //   color3: '#bfd235',
-  //   color4: '#d4ff55',
-  //   color5: '#99f763',
-  //   color6: '#00ff94'
-  // } as IPreferencesFormModel;
-
   model = {} as IPreferencesFormModel;
 
   destroyed$ = new Subject<boolean>();

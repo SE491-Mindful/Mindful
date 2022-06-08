@@ -26,7 +26,10 @@ export class CalendarComponent implements OnDestroy {
   dailyOverviewModel = {} as IDailyOverviewModel;
   isOverviewModelOpen = false;
 
-  currentEventModel = {} as ICreateEventModel;
+  currentEventModel = {
+    date: formatDate(Date.now(), 'YYYY-MM-dd', 'en_US') + 'T00:00:00'
+  } as ICreateEventModel;
+
   isModalOpen = false;
 
   userPreferences: IPreferencesFormModel = {} as IPreferencesFormModel;
