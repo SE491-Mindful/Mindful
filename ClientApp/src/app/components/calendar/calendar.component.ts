@@ -12,7 +12,7 @@ import { ICreateEventModel } from 'src/app/models/i-createEvent.model';
 import { IDailyOverviewModel } from 'src/app/models/i-dailyOverview.model';
 import { IPreferencesFormModel } from 'src/app/models/i-preferencesForm.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
-// import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin from '@fullcalendar/interaction';
 
 @Component({
   selector: 'app-calendar',
@@ -164,7 +164,7 @@ export class CalendarComponent implements OnDestroy {
   };
 
   calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin],
+    plugins: [dayGridPlugin, interactionPlugin],
     eventDisplay: '',
     defaultRangeSeparator: '',
     titleRangeSeparator: '',
